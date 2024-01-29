@@ -3,7 +3,7 @@
 /// <summary>
 /// A table name or a parenthesized subquery with an optional alias
 /// </summary>
-public abstract record TableFactor : IWriteSql, IElement
+public abstract class TableFactor : IWriteSql, IElement
 {
     /// <summary>
     /// Common table alias across all implementations
@@ -14,7 +14,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// </summary>
     /// <param name="SubQuery">Subquery</param>
     /// <param name="Lateral">True if lateral</param>
-    public record Derived(Query SubQuery, bool Lateral = false) : TableFactor
+    public class Derived(Query SubQuery, bool Lateral = false) : TableFactor
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -32,7 +32,7 @@ public abstract record TableFactor : IWriteSql, IElement
         }
     }
 
-    public record Function(bool Lateral, ObjectName Name, Sequence<FunctionArg> Args) : TableFactor
+    public class Function(bool Lateral, ObjectName Name, Sequence<FunctionArg> Args) : TableFactor
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -60,7 +60,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// The parser may also accept non-standard nesting of bare tables for some
     /// dialects, but the information about such nesting is stripped from AST.
     /// </summary>
-    public record NestedJoin : TableFactor
+    public class NestedJoin : TableFactor
     {
         public TableWithJoins? TableWithJoins { get; init; }
 
@@ -77,7 +77,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// <summary>
     /// Pivot table factor
     /// </summary>
-    public record Pivot(
+    public class Pivot(
         [property: Visit(0)] TableFactor TableFactor,
         [property: Visit(2)] Expression AggregateFunction,
         Sequence<Ident> ValueColumns,
@@ -102,7 +102,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// <summary>
     /// Unpivot table factor
     /// </summary>
-    public record Unpivot(TableFactor TableFactor, Ident Value, Ident Name, Sequence<Ident> Columns) : TableFactor
+    public class Unpivot(TableFactor TableFactor, Ident Value, Ident Name, Sequence<Ident> Columns) : TableFactor
     {
         public TableAlias? PivotAlias { get; set; }
 
@@ -122,7 +122,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// Table0based factor
     /// </summary>
     /// <param name="Name">Object name</param>
-    public record Table([property: Visit(0)] ObjectName Name) : TableFactor
+    public class Table([property: Visit(0)] ObjectName Name) : TableFactor
     {
         /// Arguments of a table-valued function, as supported by Postgres
         /// and MSSQL. Note that deprecated MSSQL `FROM foo (NOLOCK)` syntax
@@ -172,7 +172,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Expression">Function expression</param>
-    public record TableFunction(Expression Expression) : TableFactor
+    public class TableFunction(Expression Expression) : TableFactor
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -198,7 +198,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// +---------+--------+
     /// </example>
     /// </summary>
-    public record UnNest(Sequence<Expression> ArrayExpressions) : TableFactor
+    public class UnNest(Sequence<Expression> ArrayExpressions) : TableFactor
     {
         public bool WithOffset { get; init; }
         public Ident? WithOffsetAlias { get; init; }
@@ -240,7 +240,7 @@ public abstract record TableFactor : IWriteSql, IElement
     /// <param name="JsonExpression"></param>
     /// <param name="JsonPath"></param>
     /// <param name="Columns"></param>
-    public record JsonTable(Expression JsonExpression, Value JsonPath, Sequence<JsonTableColumn> Columns) : TableFactor
+    public class JsonTable(Expression JsonExpression, Value JsonPath, Sequence<JsonTableColumn> Columns) : TableFactor
     {
         public override void ToSql(SqlTextWriter writer)
         {

@@ -3,7 +3,7 @@
 /// <summary>
 /// Object name containing one more more named identifiers
 /// </summary>
-public record ObjectName : IWriteSql, IElement
+public class ObjectName : IWriteSql, IElement
 {
     /// <summary>
     /// Single identifier object name

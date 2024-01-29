@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="Recursive">True if recursive</param>
 /// <param name="CteTables">Common expression tables</param>
-public record With(bool Recursive, Sequence<CommonTableExpression> CteTables) : IWriteSql, IElement
+public class With(bool Recursive, Sequence<CommonTableExpression> CteTables) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

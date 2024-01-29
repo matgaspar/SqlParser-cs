@@ -1,8 +1,8 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record DistinctFilter : IWriteSql
+public abstract class DistinctFilter : IWriteSql
 {
-    public record Distinct : DistinctFilter
+    public class Distinct : DistinctFilter
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -10,7 +10,7 @@ public abstract record DistinctFilter : IWriteSql
         }
     }
 
-    public record On(Sequence<Expression> ColumnNames) : DistinctFilter
+    public class On(Sequence<Expression> ColumnNames) : DistinctFilter
     {
         public override void ToSql(SqlTextWriter writer)
         {

@@ -6,7 +6,7 @@
 /// <param name="Quantity">Fetch quantity</param>
 /// <param name="WithTies">With ties flag</param>
 /// <param name="Percent">Fetch is percentage</param>
-public record Fetch(Expression? Quantity = null, bool WithTies = false, bool Percent = false) : IWriteSql, IElement
+public class Fetch(Expression? Quantity = null, bool WithTies = false, bool Percent = false) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -26,62 +26,62 @@ public record Fetch(Expression? Quantity = null, bool WithTies = false, bool Per
 /// <summary>
 /// Fetch direction
 /// </summary>
-public abstract record FetchDirection : IWriteSql
+public abstract class FetchDirection : IWriteSql
 {
     /// <summary>
     /// Fetch with limit
     /// </summary>
     /// <param name="Limit"></param>
-    public abstract record LimitedFetchDirection(Value Limit) : FetchDirection;
+    public abstract class LimitedFetchDirection(Value Limit) : FetchDirection;
 
     /// <summary>
     /// Fetch count 
     /// </summary>
-    public record Count(Value Limit) : LimitedFetchDirection(Limit);
+    public class Count(Value Limit) : LimitedFetchDirection(Limit);
     /// <summary>
     /// Fetch next
     /// </summary>
-    public record Next : FetchDirection;
+    public class Next : FetchDirection;
     /// <summary>
     /// Fetch prior
     /// </summary>
-    public record Prior : FetchDirection;
+    public class Prior : FetchDirection;
     /// <summary>
     /// Fetch first
     /// </summary>
-    public record First : FetchDirection;
+    public class First : FetchDirection;
     /// <summary>
     /// Fetch last
     /// </summary>
-    public record Last : FetchDirection;
+    public class Last : FetchDirection;
     /// <summary>
     /// Fetch absolute
     /// </summary>
-    public record Absolute(Value Limit) : LimitedFetchDirection(Limit);
+    public class Absolute(Value Limit) : LimitedFetchDirection(Limit);
     /// <summary>
     /// 
     /// </summary>
-    public record Relative(Value Limit) : LimitedFetchDirection(Limit);
+    public class Relative(Value Limit) : LimitedFetchDirection(Limit);
     /// <summary>
     /// Fetch all
     /// </summary>
-    public record All : FetchDirection;
+    public class All : FetchDirection;
     /// <summary>
     /// Fetch forward
     /// </summary>
-    public record Forward(Value Limit) : LimitedFetchDirection(Limit);
+    public class Forward(Value Limit) : LimitedFetchDirection(Limit);
     /// <summary>
     /// Fetch forward all
     /// </summary>
-    public record ForwardAll : FetchDirection;
+    public class ForwardAll : FetchDirection;
     /// <summary>
     /// Fetch backward
     /// </summary>
-    public record Backward(Value Limit) : LimitedFetchDirection(Limit);
+    public class Backward(Value Limit) : LimitedFetchDirection(Limit);
     /// <summary>
     /// Fetch backward all
     /// </summary>
-    public record BackwardAll : FetchDirection;
+    public class BackwardAll : FetchDirection;
 
     public void ToSql(SqlTextWriter writer)
     {

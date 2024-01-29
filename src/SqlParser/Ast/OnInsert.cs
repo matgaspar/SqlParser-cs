@@ -4,7 +4,7 @@ namespace SqlParser.Ast;
 /// <summary>
 /// On insert statement
 /// </summary>
-public abstract record OnInsert : IWriteSql, IElement
+public abstract class OnInsert : IWriteSql, IElement
 {
     /// <summary>
     /// MySQL when the key already exists, then execute an update instead
@@ -15,7 +15,7 @@ public abstract record OnInsert : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Assignments"></param>
-    public record DuplicateKeyUpdate(Sequence<Statement.Assignment> Assignments) : OnInsert
+    public class DuplicateKeyUpdate(Sequence<Statement.Assignment> Assignments) : OnInsert
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -31,7 +31,7 @@ public abstract record OnInsert : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="OnConflict"></param>
-    public record Conflict(OnConflict OnConflict) : OnInsert
+    public class Conflict(OnConflict OnConflict) : OnInsert
     {
         public override void ToSql(SqlTextWriter writer)
         {

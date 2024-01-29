@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record UserDefinedTypeCompositeAttributeDef(Ident Name, DataType DataType, ObjectName? Collation = null) : IWriteSql
+public class UserDefinedTypeCompositeAttributeDef(Ident Name, DataType DataType, ObjectName? Collation = null) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {

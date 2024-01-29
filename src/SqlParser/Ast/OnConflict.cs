@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="OnConflictAction">On conflict action</param>
 /// <param name="ConflictTarget">Conflict target</param>
-public record OnConflict(OnConflictAction OnConflictAction, ConflictTarget? ConflictTarget = null) : IWriteSql, IElement
+public class OnConflict(OnConflictAction OnConflictAction, ConflictTarget? ConflictTarget = null) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -21,17 +21,17 @@ public record OnConflict(OnConflictAction OnConflictAction, ConflictTarget? Conf
 /// <summary>
 /// On conflict action
 /// </summary>
-public abstract record OnConflictAction : IWriteSql
+public abstract class OnConflictAction : IWriteSql
 {
     /// <summary>
     /// Do nothing on conflict
     /// </summary>
-    public record DoNothing : OnConflictAction;
+    public class DoNothing : OnConflictAction;
     /// <summary>
     /// Update on conflict
     /// </summary>
     /// <param name="DoUpdateAction">Do update instruction</param>
-    public record DoUpdate(DoUpdateAction DoUpdateAction) : OnConflictAction, IElement;
+    public class DoUpdate(DoUpdateAction DoUpdateAction) : OnConflictAction, IElement;
 
     public void ToSql(SqlTextWriter writer)
     {

@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="Value">Expression</param>
 /// <param name="Rows">Offset rows type</param>
-public record Offset(Expression Value, OffsetRows Rows) : IWriteSql, IElement
+public class Offset(Expression Value, OffsetRows Rows) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

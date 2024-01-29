@@ -9,7 +9,7 @@
 /// <param name="Alias">CTE Alias</param>
 /// <param name="Query">CTE Select</param>
 /// <param name="From">Optional From identifier</param>
-public record CommonTableExpression(TableAlias Alias, Query Query, Ident? From = null) : IWriteSql, IElement
+public class CommonTableExpression(TableAlias Alias, Query Query, Ident? From = null) : IWriteSql, IElement
 {
     public Ident? From { get; internal set; } = From;
 

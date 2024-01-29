@@ -1,8 +1,8 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record TableVersion : IWriteSql
+public abstract class TableVersion : IWriteSql
 {
-    public record ForSystemTimeAsOf(Expression Expression) : TableVersion
+    public class ForSystemTimeAsOf(Expression Expression) : TableVersion
     {
         public override void ToSql(SqlTextWriter writer)
         {

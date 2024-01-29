@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record JsonTableColumn(Ident Name, DataType Type, Value Path, bool Exists,
+public class JsonTableColumn(Ident Name, DataType Type, Value Path, bool Exists,
     JsonTableColumnErrorHandling? OnEmpty, JsonTableColumnErrorHandling? OnError) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
@@ -21,11 +21,11 @@ public record JsonTableColumn(Ident Name, DataType Type, Value Path, bool Exists
     }
 }
 
-public abstract record JsonTableColumnErrorHandling : IWriteSql
+public abstract class JsonTableColumnErrorHandling : IWriteSql
 {
-    public record Null : JsonTableColumnErrorHandling;
-    public record Default(Value Value) : JsonTableColumnErrorHandling;
-    public record Error : JsonTableColumnErrorHandling;
+    public class Null : JsonTableColumnErrorHandling;
+    public class Default(Value Value) : JsonTableColumnErrorHandling;
+    public class Error : JsonTableColumnErrorHandling;
 
     public void ToSql(SqlTextWriter writer)
     {

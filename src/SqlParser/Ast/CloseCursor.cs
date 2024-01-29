@@ -3,12 +3,12 @@
 /// <summary>
 /// Close Cursor specifications
 /// </summary>
-public abstract record CloseCursor : IWriteSql
+public abstract class CloseCursor : IWriteSql
 {
     /// <summary>
     /// Close all cursors
     /// </summary>
-    public record All : CloseCursor
+    public class All : CloseCursor
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -20,7 +20,7 @@ public abstract record CloseCursor : IWriteSql
     /// Close specific cursors
     /// </summary>
     /// <param name="Name">Cursor name identifier</param>
-    public record Specific(Ident Name) : CloseCursor
+    public class Specific(Ident Name) : CloseCursor
     {
         public override void ToSql(SqlTextWriter writer)
         {

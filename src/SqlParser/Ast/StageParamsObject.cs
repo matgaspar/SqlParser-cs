@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record StageParamsObject
+public class StageParamsObject
 {
     public string Url { get; set; }
     public List<DataLoadingOption> Encryption { get; set; }

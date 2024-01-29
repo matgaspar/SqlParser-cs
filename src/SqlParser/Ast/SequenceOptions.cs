@@ -10,14 +10,14 @@
 /// </c>
 /// </example>
 /// </summary>
-public abstract record SequenceOptions : IWriteSql, IElement
+public abstract class SequenceOptions : IWriteSql, IElement
 {
     /// <summary>
     /// By by sequence
     /// </summary>
     /// <param name="Increment">Expression</param>
     /// <param name="By">True to increment</param>
-    public record IncrementBy(Expression Increment, bool By) : SequenceOptions
+    public class IncrementBy(Expression Increment, bool By) : SequenceOptions
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -31,7 +31,7 @@ public abstract record SequenceOptions : IWriteSql, IElement
     /// Min value sequence
     /// </summary>
     /// <param name="Value">Min value</param>
-    public record MinValue(MinMaxValue Value) : SequenceOptions
+    public class MinValue(MinMaxValue Value) : SequenceOptions
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -49,7 +49,7 @@ public abstract record SequenceOptions : IWriteSql, IElement
     /// Max value sequence
     /// </summary>
     /// <param name="Value">Max value</param>
-    public record MaxValue(MinMaxValue Value) : SequenceOptions
+    public class MaxValue(MinMaxValue Value) : SequenceOptions
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -68,7 +68,7 @@ public abstract record SequenceOptions : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="With">True if start</param>
-    public record StartWith(Expression Expression, bool With) : SequenceOptions
+    public class StartWith(Expression Expression, bool With) : SequenceOptions
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -80,7 +80,7 @@ public abstract record SequenceOptions : IWriteSql, IElement
     /// Cache sequence
     /// </summary>
     /// <param name="Expression">Cycle expression</param>
-    public record Cache(Expression Expression) : SequenceOptions
+    public class Cache(Expression Expression) : SequenceOptions
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -91,7 +91,7 @@ public abstract record SequenceOptions : IWriteSql, IElement
     /// Cycle sequence
     /// </summary>
     /// <param name="ShouldCycle">True if cycling</param>
-    public record Cycle(bool ShouldCycle) : SequenceOptions
+    public class Cycle(bool ShouldCycle) : SequenceOptions
     {
         public override void ToSql(SqlTextWriter writer)
         {

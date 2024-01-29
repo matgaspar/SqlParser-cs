@@ -5,7 +5,7 @@ namespace SqlParser.Ast;
 
 // ReSharper disable CommentTypo
 
-public abstract record Expression : IWriteSql, IElement
+public abstract class Expression : IWriteSql, IElement
 {
     public interface INegated
     {
@@ -19,7 +19,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="DataType">Data type</param>
-    public abstract record CastBase(Expression Expression, DataType DataType, CastFormat? Format) : Expression
+    public abstract class CastBase(Expression Expression, DataType DataType, CastFormat? Format) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -46,7 +46,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Filter">Filter</param>
-    public record AggregateExpressionWithFilter(Expression Expression, Expression Filter) : Expression
+    public class AggregateExpressionWithFilter(Expression Expression, Expression Filter) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -59,7 +59,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Left">Expression</param>
     /// <param name="CompareOp">Operator</param>
     /// <param name="Right">Expression</param>
-    public record AllOp(Expression Left, BinaryOperator CompareOp, Expression Right) : Expression
+    public class AllOp(Expression Left, BinaryOperator CompareOp, Expression Right) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -72,7 +72,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Left">Expression</param>
     /// <param name="CompareOp">Operator</param>
     /// <param name="Right">Expression</param>
-    public record AnyOp(Expression Left, BinaryOperator CompareOp, Expression Right) : Expression
+    public class AnyOp(Expression Left, BinaryOperator CompareOp, Expression Right) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -83,7 +83,7 @@ public abstract record Expression : IWriteSql, IElement
     /// An array expression e.g. ARRAY[1, 2]
     /// </summary>
     /// <param name="Arr"></param>
-    public record Array(ArrayExpression Arr) : Expression
+    public class Array(ArrayExpression Arr) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -99,7 +99,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="ArrayAggregate">Array aggregation</param>
-    public record ArrayAgg(ArrayAggregate ArrayAggregate) : Expression
+    public class ArrayAgg(ArrayAggregate ArrayAggregate) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -116,7 +116,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Obj"></param>
     /// <param name="Indexes"></param>
-    public record ArrayIndex(Expression Obj, Sequence<Expression> Indexes) : Expression
+    public class ArrayIndex(Expression Obj, Sequence<Expression> Indexes) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -137,7 +137,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Query">Subquery</param>
-    public record ArraySubquery(Query Query) : Expression
+    public class ArraySubquery(Query Query) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -152,7 +152,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record AtTimeZone(Expression Timestamp, string? TimeZone) : Expression
+    public class AtTimeZone(Expression Timestamp, string? TimeZone) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -167,7 +167,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record Between(Expression Expression, bool Negated, Expression Low, Expression High) : Expression, INegated
+    public class Between(Expression Expression, bool Negated, Expression Low, Expression High) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -185,7 +185,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Left">Operation left hand expression</param>
     /// <param name="Op">Binary operator</param>
     /// <param name="Right">Operation right hand expression</param>
-    public record BinaryOp(Expression Left, BinaryOperator Op, Expression Right) : Expression
+    public class BinaryOp(Expression Left, BinaryOperator Op, Expression Right) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -227,7 +227,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2011-foundation-grammar.html#simple-when-clause"/>
     /// </summary>
     /// <param name="Results">Case results</param>
-    public record Case(Sequence<Expression> Conditions, Sequence<Expression> Results) : Expression
+    public class Case(Sequence<Expression> Conditions, Sequence<Expression> Results) : Expression
     {
         public Expression? Operand { get; init; }
         //public Sequence<Increment>? Conditions { get; init; }
@@ -261,13 +261,13 @@ public abstract record Expression : IWriteSql, IElement
     /// <summary>
     /// CAST an expression to a different data type e.g. `CAST(foo AS VARCHAR(123))`
     /// </summary>
-    public record Cast(Expression Expression, DataType DataType, CastFormat? Format = null) : CastBase(Expression, DataType, Format);
+    public class Cast(Expression Expression, DataType DataType, CastFormat? Format = null) : CastBase(Expression, DataType, Format);
     /// <summary>
     /// CEIL(Expression [TO DateTimeField])
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Field">Date time field</param>
-    public record Ceil(Expression Expression, DateTimeField Field) : Expression
+    public class Ceil(Expression Expression, DateTimeField Field) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -292,7 +292,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Collation">Collation</param>
-    public record Collate(Expression Expression, ObjectName Collation) : Expression
+    public class Collate(Expression Expression, ObjectName Collation) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -308,7 +308,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Idents">Name identifiers</param>
-    public record CompoundIdentifier(Sequence<Ident> Idents) : Expression
+    public class CompoundIdentifier(Sequence<Ident> Idents) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -325,7 +325,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Key">Key identifier</param>
-    public record CompositeAccess(Expression Expression, Ident Key) : Expression
+    public class CompositeAccess(Expression Expression, Ident Key) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -335,7 +335,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <summary>
     /// CONVERT a value to a different data type or character encoding `CONVERT(foo USING utf8mb4)`
     /// </summary>
-    public record Convert(Expression Expression, DataType? DataType, ObjectName? CharacterSet, bool TargetBeforeValue) : Expression
+    public class Convert(Expression Expression, DataType? DataType, ObjectName? CharacterSet, bool TargetBeforeValue) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -372,7 +372,7 @@ public abstract record Expression : IWriteSql, IElement
     /// CUBE expresion.
     /// </summary>
     /// <param name="Sets">Sets</param>
-    public record Cube(Sequence<Sequence<Expression>> Sets) : Expression
+    public class Cube(Sequence<Sequence<Expression>> Sets) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -409,7 +409,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="SubQuery">Subquery</param>
     /// <param name="Negated">Exists negated</param>
-    public record Exists(Query SubQuery, bool Negated = false) : Expression, INegated
+    public class Exists(Query SubQuery, bool Negated = false) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -425,7 +425,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Field">Date time field</param>
-    public record Extract(Expression Expression, DateTimeField Field) : Expression
+    public class Extract(Expression Expression, DateTimeField Field) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -442,7 +442,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Field">Date time field</param>
-    public record Floor(Expression Expression, DateTimeField Field) : Expression
+    public class Floor(Expression Expression, DateTimeField Field) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -466,7 +466,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Name">Function object name</param>
-    public record Function(ObjectName Name) : Expression
+    public class Function(ObjectName Name) : Expression
     {
         /// <summary>
         /// Sequence function call
@@ -541,7 +541,7 @@ public abstract record Expression : IWriteSql, IElement
     /// GROUPING SETS expression.
     /// </summary>
     /// <param name="Expressions">Sets</param>
-    public record GroupingSets(Sequence<Sequence<Expression>> Expressions) : Expression
+    public class GroupingSets(Sequence<Sequence<Expression>> Expressions) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -563,7 +563,7 @@ public abstract record Expression : IWriteSql, IElement
     /// Identifier e.g. table name or column name
     /// </summary>
     /// <param name="Ident">Identifier name</param>
-    public record Identifier(Ident Ident) : Expression
+    public class Identifier(Ident Ident) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -574,7 +574,7 @@ public abstract record Expression : IWriteSql, IElement
     /// ILIKE (case-insensitive LIKE)
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public record ILike(Expression Expression, bool Negated, Expression Pattern, char? EscapeChar = null) : Expression, INegated
+    public class ILike(Expression Expression, bool Negated, Expression Pattern, char? EscapeChar = null) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -597,7 +597,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record InList(Expression Expression, Sequence<Expression> List, bool Negated) : Expression, INegated
+    public class InList(Expression Expression, Sequence<Expression> List, bool Negated) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -612,7 +612,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record InSubquery(Query SubQuery, bool Negated, Expression? Expression = null) : Expression, INegated
+    public class InSubquery(Query SubQuery, bool Negated, Expression? Expression = null) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -638,7 +638,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Value">Value</param>
     /// <param name="LeadingField">Date time leading field</param>
     /// <param name="LastField">Date time last field</param>
-    public record Interval(Expression Value, DateTimeField LeadingField = DateTimeField.None, DateTimeField LastField = DateTimeField.None) : Expression
+    public class Interval(Expression Value, DateTimeField LeadingField = DateTimeField.None, DateTimeField LastField = DateTimeField.None) : Expression
     {
         public ulong? LeadingPrecision { get; init; }
         /// The seconds precision can be specified in SQL source as
@@ -685,7 +685,7 @@ public abstract record Expression : IWriteSql, IElement
     /// 
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/charset-introducer.html"/>
     /// </summary>
-    public record IntroducedString(string Introducer, Value Value) : Expression
+    public class IntroducedString(string Introducer, Value Value) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -700,7 +700,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record InUnnest(Expression Expression, Expression ArrayExpression, bool Negated) : Expression, INegated
+    public class InUnnest(Expression Expression, Expression ArrayExpression, bool Negated) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -712,7 +712,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression1">Expresison 1</param>
     /// <param name="Expression2">Expressoin 2</param>
-    public record IsDistinctFrom(Expression Expression1, Expression Expression2) : Expression
+    public class IsDistinctFrom(Expression Expression1, Expression Expression2) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -723,7 +723,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS FALSE operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsFalse(Expression Expression) : Expression
+    public class IsFalse(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -735,7 +735,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression1">Expresison 1</param>
     /// <param name="Expression2">Expressoin 1</param>
-    public record IsNotDistinctFrom(Expression Expression1, Expression Expression2) : Expression
+    public class IsNotDistinctFrom(Expression Expression1, Expression Expression2) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -746,7 +746,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS NOT FALSE operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsNotFalse(Expression Expression) : Expression
+    public class IsNotFalse(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -757,7 +757,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS NOT NULL operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsNotNull(Expression Expression) : Expression
+    public class IsNotNull(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -768,7 +768,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS NOT UNKNOWN operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsNotUnknown(Expression Expression) : Expression
+    public class IsNotUnknown(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -779,7 +779,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS NULL operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsNull(Expression Expression) : Expression
+    public class IsNull(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -790,7 +790,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS NOT TRUE operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsNotTrue(Expression Expression) : Expression
+    public class IsNotTrue(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -800,7 +800,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <summary>
     /// IS TRUE operator
     /// </summary>
-    public record IsTrue(Expression Expression) : Expression
+    public class IsTrue(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -811,7 +811,7 @@ public abstract record Expression : IWriteSql, IElement
     /// IS UNKNOWN operator
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record IsUnknown(Expression Expression) : Expression
+    public class IsUnknown(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -824,7 +824,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Left">Left hand expression</param>
     /// <param name="Operator">Json Operator</param>
     /// <param name="Right">Right hand expression</param>
-    public record JsonAccess(Expression Left, JsonOperator Operator, Expression Right) : Expression
+    public class JsonAccess(Expression Left, JsonOperator Operator, Expression Right) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -846,7 +846,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Negated">Negated</param>
     /// <param name="Pattern">pattern expression</param>
     /// <param name="EscapeChar">Escape character</param>
-    public record Like(Expression? Expression, bool Negated, Expression Pattern, char? EscapeChar = null) : Expression, INegated
+    public class Like(Expression? Expression, bool Negated, Expression Pattern, char? EscapeChar = null) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -870,7 +870,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="ListAggregate">List aggregate</param>
-    public record ListAgg(ListAggregate ListAggregate) : Expression
+    public class ListAgg(ListAggregate ListAggregate) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -881,7 +881,7 @@ public abstract record Expression : IWriteSql, IElement
     /// Literal value e.g. '5'
     /// </summary>
     /// <param name="Value">Value</param>
-    public record LiteralValue(Value Value) : Expression
+    public class LiteralValue(Value Value) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -900,7 +900,7 @@ public abstract record Expression : IWriteSql, IElement
     /// column['field'] or column[4]
     /// </c>
     /// </example>
-    public record MapAccess(Expression Column, Sequence<Expression> Keys) : Expression
+    public class MapAccess(Expression Column, Sequence<Expression> Keys) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -934,7 +934,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Columns">Columns</param>
     /// <param name="MatchValue">Match Value</param>
     /// <param name="OptSearchModifier">Search Modifier</param>
-    public record MatchAgainst(Sequence<Ident> Columns, Value MatchValue, SearchModifier OptSearchModifier) : Expression
+    public class MatchAgainst(Sequence<Ident> Columns, Value MatchValue, SearchModifier OptSearchModifier) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -955,7 +955,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <summary>
     /// BigQuery specific: A named expression in a typeless struct
     /// </summary>
-    public record Named(Expression Expression, Ident Name) : Expression
+    public class Named(Expression Expression, Ident Name) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -971,7 +971,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Expression"></param>
-    public record Nested(Expression Expression) : Expression
+    public class Nested(Expression Expression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -990,7 +990,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="OverlayWhat">Overlay what expression</param>
     /// <param name="OverlayFrom">Overlay from expression</param>
     /// <param name="OverlayFor">Overlay for expression</param>
-    public record Overlay(Expression Expression, Expression OverlayWhat, Expression OverlayFrom, Expression? OverlayFor = null) : Expression
+    public class Overlay(Expression Expression, Expression OverlayWhat, Expression OverlayFrom, Expression? OverlayFor = null) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1014,7 +1014,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="In">In expression</param>
-    public record Position(Expression Expression, Expression In) : Expression
+    public class Position(Expression Expression, Expression In) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1028,7 +1028,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Expression">Expression</param>
     /// <param name="Pattern">Expression pattern</param>
     /// <param name="RegularExpression">Regular expression</param>
-    public record RLike(bool Negated, Expression Expression, Expression Pattern, bool RegularExpression) : Expression
+    public class RLike(bool Negated, Expression Expression, Expression Pattern, bool RegularExpression) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1047,7 +1047,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Expressions">Sets</param>
-    public record Rollup(Sequence<Sequence<Expression>> Expressions) : Expression
+    public class Rollup(Sequence<Sequence<Expression>> Expressions) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1087,11 +1087,11 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="DataType"></param>
-    public record SafeCast(Expression Expression, DataType DataType, CastFormat? Format = null) : CastBase(Expression, DataType, Format);
+    public class SafeCast(Expression Expression, DataType DataType, CastFormat? Format = null) : CastBase(Expression, DataType, Format);
     /// <summary>
     /// SimilarTo regex
     /// </summary>
-    public record SimilarTo(Expression Expression, bool Negated, Expression Pattern, char? EscapeChar = null) : Expression, INegated
+    public class SimilarTo(Expression Expression, bool Negated, Expression Pattern, char? EscapeChar = null) : Expression, INegated
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1110,7 +1110,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <summary>
     /// BigQuery specific Struct literal expression
     /// </summary>
-    public record Struct(Sequence<Expression> Values, Sequence<StructField> Fields) : Expression
+    public class Struct(Sequence<Expression> Values, Sequence<StructField> Fields) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1141,7 +1141,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Expression">Expression</param>
     /// <param name="SubstringFrom">From expression</param>
     /// <param name="SubstringFor">For expression</param>
-    public record Substring(Expression Expression, Expression? SubstringFrom = null, Expression? SubstringFor = null, bool Special = false) : Expression
+    public class Substring(Expression Expression, Expression? SubstringFrom = null, Expression? SubstringFor = null, bool Special = false) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1183,7 +1183,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Query">Select</param>
-    public record Subquery(Query Query) : Expression
+    public class Subquery(Query Query) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1203,7 +1203,7 @@ public abstract record Expression : IWriteSql, IElement
     /// <param name="Expression">Expression</param>
     /// <param name="TrimWhere">Trim where field</param>
     /// <param name="TrimWhat">What to trip expression</param>
-    public record Trim(Expression Expression, TrimWhereField TrimWhere, Expression? TrimWhat = null, Sequence<Expression>? TrimCharacters = null) : Expression
+    public class Trim(Expression Expression, TrimWhereField TrimWhere, Expression? TrimWhat = null, Sequence<Expression>? TrimCharacters = null) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1245,12 +1245,12 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="DataType">Cast data type</param>
-    public record TryCast(Expression Expression, DataType DataType, CastFormat? Format = null) : CastBase(Expression, DataType, Format);
+    public class TryCast(Expression Expression, DataType DataType, CastFormat? Format = null) : CastBase(Expression, DataType, Format);
     /// <summary>
     /// ROW / TUPLE a single value, such as `SELECT (1, 2)`
     /// </summary>
     /// <param name="Expressions">Sets</param>
-    public record Tuple(Sequence<Expression> Expressions) : Expression
+    public class Tuple(Sequence<Expression> Expressions) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1264,7 +1264,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Value">Value</param>
     /// <param name="DataType">Optional data type</param>
-    public record TypedString(string Value, DataType DataType) : Expression
+    public class TypedString(string Value, DataType DataType) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1277,7 +1277,7 @@ public abstract record Expression : IWriteSql, IElement
     /// </summary>
     /// <param name="Expression">Expression</param>
     /// <param name="Op"></param>
-    public record UnaryOp(Expression Expression, UnaryOperator Op) : Expression
+    public class UnaryOp(Expression Expression, UnaryOperator Op) : Expression
     {
         public override void ToSql(SqlTextWriter writer)
         {

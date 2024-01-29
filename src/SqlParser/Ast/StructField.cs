@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record StructField(DataType FieldType, Ident? FieldName = null) : IWriteSql
+public class StructField(DataType FieldType, Ident? FieldName = null) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {

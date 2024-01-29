@@ -1,68 +1,87 @@
-﻿namespace SqlParser.Ast;
-
-/// <summary>
-/// Named identifier
-/// </summary>
-/// <param name="Value">Name name value</param>
-/// <param name="QuoteStyle">Surrounding quotation style</param>
-public record Ident(string Value, char? QuoteStyle = null) : IWriteSql
+﻿namespace SqlParser.Ast
 {
     /// <summary>
-    /// Implicit conversion from an Ident to a string.
+    /// Named identifier
     /// </summary>
-    /// <param name="name">Ident string value</param>
-    public static implicit operator string(Ident name)
+    /// <param name="Value">Name name value</param>
+    /// <param name="QuoteStyle">Surrounding quotation style</param>
+    public class Ident : IWriteSql
     {
-        return name.ToString();
-    }
-    /// <summary>
-    /// Implicit conversion from a string to an Ident. Assumes
-    /// no surrounding quotation.
-    /// </summary>
-    /// <param name="value" >Unquoted Ident</param>
-    public static implicit operator Ident(string value)
-    {
-        return new Ident(value);
-    }
+        public string Value { get; }
+        public char? QuoteStyle { get; }
 
-    public override string ToString()
-    {
-        return this.ToSql();
-    }
+        public Ident(string value, char? quoteStyle = null)
+        {
+            Value = value;
+            QuoteStyle = quoteStyle;
+        }
 
-    /// <summary>
-    /// ToString pass through
-    /// </summary>
-    /// <param name="writer">Sql writer instance</param>
-    public void ToSql(SqlTextWriter writer)
-    {
-        switch( QuoteStyle){
-            case Symbols.DoubleQuote:
-            case Symbols.SingleQuote:
-            case Symbols.Backtick:
+        /// <summary>
+        /// Implicit conversion from an Ident to a string.
+        /// </summary>
+        /// <param name="name">Ident string value</param>
+        public static implicit operator string(Ident name)
+        {
+            return name.ToString();
+        }
+        /// <summary>
+        /// Implicit conversion from a string to an Ident. Assumes
+        /// no surrounding quotation.
+        /// </summary>
+        /// <param name="value" >Unquoted Ident</param>
+        public static implicit operator Ident(string value)
+        {
+            return new Ident(value);
+        }
 
-                writer.WriteSql($"{QuoteStyle}{Value.EscapeQuotedString(QuoteStyle.Value)}{QuoteStyle}");
-                break;
+        public override string ToString()
+        {
+            return this.ToSql();
+        }
 
-            case Symbols.SquareBracketOpen:
-                writer.Write($"[{Value}]");
-                break;
+        /// <summary>
+        /// ToString pass through
+        /// </summary>
+        /// <param name="writer">Sql writer instance</param>
+        public void ToSql(SqlTextWriter writer)
+        {
+            switch(QuoteStyle){
+                case Symbols.DoubleQuote:
+                case Symbols.SingleQuote:
+                case Symbols.Backtick:
 
-            default:
-                writer.Write(Value);
-                break;
+                    writer.WriteSql($"{QuoteStyle}{Value.EscapeQuotedString(QuoteStyle.Value)}{QuoteStyle}");
+                    break;
+
+                case Symbols.SquareBracketOpen:
+                    writer.Write($"[{Value}]");
+                    break;
+
+                default:
+                    writer.Write(Value);
+                    break;
+            }
         }
     }
-}
-/// <summary>
-/// Name with named alias
-/// </summary>
-/// <param name="Name">Name identifier</param>
-/// <param name="Alias">Alias identifier</param>
-public record IdentWithAlias(Ident Name, Ident Alias):IWriteSql, IElement
-{
-    public void ToSql(SqlTextWriter writer)
+    /// <summary>
+    /// Name with named alias
+    /// </summary>
+    /// <param name="Name">Name identifier</param>
+    /// <param name="Alias">Alias identifier</param>
+    public class IdentWithAlias : IWriteSql, IElement
     {
-        writer.WriteSql($"{Name} AS {Alias}");
+        public IdentWithAlias(Ident name, Ident alias)
+        {
+            Name = name;
+            Alias = alias;
+        }
+
+        public Ident Name { get; }
+        public Ident Alias { get; }
+
+        public void ToSql(SqlTextWriter writer)
+        {
+            writer.WriteSql($"{Name} AS {Alias}");
+        }
     }
 }

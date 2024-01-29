@@ -3,16 +3,16 @@
 /// <summary>
 /// Min or max value
 /// </summary>
-public abstract record MinMaxValue
+public abstract class MinMaxValue
 {
     /// <summary>
     /// Clause is not specified
     /// </summary>
-    public record Empty : MinMaxValue;
+    public class Empty : MinMaxValue;
     /// <summary>
     /// NO minvalue, no maxvalue
     /// </summary>
-    public record None : MinMaxValue;
+    public class None : MinMaxValue;
     /// <summary>
     /// Minimum or maximum value
     /// <example>
@@ -22,7 +22,7 @@ public abstract record MinMaxValue
     /// </example>
     /// </summary>
     /// <param name="Expression">Min/Max value expression</param>
-    public record Some(Expression Expression) : MinMaxValue, IWriteSql, IElement
+    public class Some(Expression Expression) : MinMaxValue, IWriteSql, IElement
     {
         public void ToSql(SqlTextWriter writer)
         {

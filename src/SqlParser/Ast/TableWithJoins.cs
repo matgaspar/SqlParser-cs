@@ -4,7 +4,7 @@
 /// Represents a table with joins and table relationships
 /// </summary>
 /// <param name="Relation">Relation table factor</param>
-public record TableWithJoins(TableFactor Relation) : IWriteSql, IElement
+public class TableWithJoins(TableFactor Relation) : IWriteSql, IElement
 {
 
     [Visit(0)] public TableFactor? Relation { get; set; } = Relation;

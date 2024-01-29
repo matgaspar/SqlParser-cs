@@ -3,22 +3,22 @@
 /// <summary>
 /// Wildcard expressions
 /// </summary>
-public abstract record WildcardExpression : Expression
+public abstract class WildcardExpression : Expression
 {
     /// <summary>
     /// Expression
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record Expr(Expression Expression) : WildcardExpression, IElement;
+    public class Expr(Expression Expression) : WildcardExpression, IElement;
     /// <summary>
     /// Qualified expression
     /// </summary>
     /// <param name="Name">Object name</param>
-    public record QualifiedWildcard(ObjectName Name) : WildcardExpression, IElement;
+    public class QualifiedWildcard(ObjectName Name) : WildcardExpression, IElement;
     /// <summary>
     /// Wildcard expression
     /// </summary>
-    public record Wildcard : WildcardExpression;
+    public class Wildcard : WildcardExpression;
 
     public static implicit operator FunctionArgExpression(WildcardExpression expr)
     {

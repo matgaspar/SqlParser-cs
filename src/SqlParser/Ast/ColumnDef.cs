@@ -7,7 +7,7 @@
 /// <param name="DataType">Column data type</param>
 /// <param name="Collation">Collation</param>
 /// <param name="Options">Column options</param>
-public record ColumnDef(Ident Name, DataType DataType, ObjectName? Collation = null, Sequence<ColumnOptionDef>? Options = null) : IWriteSql, IElement
+public class ColumnDef(Ident Name, DataType DataType, ObjectName? Collation = null, Sequence<ColumnOptionDef>? Options = null) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -48,7 +48,7 @@ public record ColumnDef(Ident Name, DataType DataType, ObjectName? Collation = n
 /// </summary>
 /// <param name="Name">Name identifier</param>
 /// <param name="Option">Column Options</param>
-public record ColumnOptionDef(ColumnOption Option, Ident? Name = null) : IWriteSql, IElement
+public class ColumnOptionDef(ColumnOption Option, Ident? Name = null) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

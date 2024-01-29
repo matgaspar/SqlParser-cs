@@ -1,9 +1,9 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record WindowType : IWriteSql
+public abstract class WindowType : IWriteSql
 {
-    public record WindowSpecType(WindowSpec Spec) : WindowType;
-    public record NamedWindow(Ident Name) : WindowType;
+    public class WindowSpecType(WindowSpec Spec) : WindowType;
+    public class NamedWindow(Ident Name) : WindowType;
 
     public void ToSql(SqlTextWriter writer)
     {

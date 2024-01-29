@@ -4,13 +4,13 @@
 /// A node in a tree, representing a "query body" expression, roughly:
 /// SELECT ... [ {UNION|EXCEPT|INTERSECT} SELECT ...]
 /// </summary>
-public abstract record SetExpression : IWriteSql, IElement
+public abstract class SetExpression : IWriteSql, IElement
 {
     /// <summary>
     /// Insert query bdy
     /// </summary>
     /// <param name="Statement">Statement</param>
-    public record Insert(Statement Statement) : SetExpression
+    public class Insert(Statement Statement) : SetExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -21,7 +21,7 @@ public abstract record SetExpression : IWriteSql, IElement
     /// Select expression body
     /// </summary>
     /// <param name="Query"></param>
-    public record QueryExpression(Query Query) : SetExpression
+    public class QueryExpression(Query Query) : SetExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -29,7 +29,7 @@ public abstract record SetExpression : IWriteSql, IElement
         }
     }
 
-    //public record QueryExpression([Visit(1)] SetExpression Body) : IWriteSql, IElement
+    //public class QueryExpression([Visit(1)] SetExpression Body) : IWriteSql, IElement
     //{
     //    [Visit(0)] public With? With { get; init; }
     //    [Visit(2)] public Sequence<OrderByExpression>? OrderBy { get; set; }
@@ -88,7 +88,7 @@ public abstract record SetExpression : IWriteSql, IElement
     /// Select expression body
     /// </summary>
     /// <param name="Select"></param>
-    public record SelectExpression(Select Select) : SetExpression
+    public class SelectExpression(Select Select) : SetExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -102,7 +102,7 @@ public abstract record SetExpression : IWriteSql, IElement
     /// <param name="Op">Set operator</param>
     /// <param name="Right">Right hand expression</param>
     /// <param name="SetQuantifier">Set quantifier</param>
-    public record SetOperation(SetExpression Left, SetOperator Op, SetExpression Right, SetQuantifier SetQuantifier) : SetExpression
+    public class SetOperation(SetExpression Left, SetOperator Op, SetExpression Right, SetQuantifier SetQuantifier) : SetExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -120,7 +120,7 @@ public abstract record SetExpression : IWriteSql, IElement
     /// Table expression
     /// </summary>
     /// <param name="Table">Table</param>
-    public record TableExpression(Table Table) : SetExpression
+    public class TableExpression(Table Table) : SetExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -131,7 +131,7 @@ public abstract record SetExpression : IWriteSql, IElement
     /// Values expression
     /// </summary>
     /// <param name="Values">Values</param>
-    public record ValuesExpression(Values Values) : SetExpression
+    public class ValuesExpression(Values Values) : SetExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {

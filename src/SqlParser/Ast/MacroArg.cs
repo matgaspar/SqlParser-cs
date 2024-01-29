@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record MacroArg(Ident Name, Expression? DefaultExpression = null) : IWriteSql
+public class MacroArg(Ident Name, Expression? DefaultExpression = null) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {

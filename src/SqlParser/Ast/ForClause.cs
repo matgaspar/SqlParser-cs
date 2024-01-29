@@ -1,15 +1,15 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record ForClause : IWriteSql
+public abstract class ForClause : IWriteSql
 {
-    public record Browse : ForClause
+    public class Browse : ForClause
     {
         public override void ToSql(SqlTextWriter writer)
         {
             writer.Write("FOR BROWSE");
         }
     }
-    public record Json(ForJson ForJson, string? Root, bool IncludeNullValues, bool WithoutArrayWrapper ) : ForClause
+    public class Json(ForJson ForJson, string? Root, bool IncludeNullValues, bool WithoutArrayWrapper ) : ForClause
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -31,7 +31,7 @@ public abstract record ForClause : IWriteSql
             }
         }
     }
-    public record Xml(ForXml ForXml, bool Elements, bool BinaryBase64, string? Root, bool Type) : ForClause
+    public class Xml(ForXml ForXml, bool Elements, bool BinaryBase64, string? Root, bool Type) : ForClause
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -61,16 +61,16 @@ public abstract record ForClause : IWriteSql
     public abstract void ToSql(SqlTextWriter writer);
 }
 
-public abstract record ForJson : IWriteSql
+public abstract class ForJson : IWriteSql
 {
-    public record Auto : ForJson
+    public class Auto : ForJson
     {
         public override void ToSql(SqlTextWriter writer)
         {
             writer.Write("AUTO");
         }
     }
-    public record Path : ForJson
+    public class Path : ForJson
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -81,9 +81,9 @@ public abstract record ForJson : IWriteSql
     public abstract void ToSql(SqlTextWriter writer);
 }
 
-public abstract record ForXml :IWriteSql
+public abstract class ForXml :IWriteSql
 {
-    public record Raw(string? Value) : ForXml
+    public class Raw(string? Value) : ForXml
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -96,7 +96,7 @@ public abstract record ForXml :IWriteSql
         }
     }
 
-    public record Auto : ForXml
+    public class Auto : ForXml
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -104,7 +104,7 @@ public abstract record ForXml :IWriteSql
         }
     }
 
-    public record Explicit : ForXml
+    public class Explicit : ForXml
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -112,7 +112,7 @@ public abstract record ForXml :IWriteSql
         }
     }
 
-    public record Path(string? Value) : ForXml
+    public class Path(string? Value) : ForXml
     {
         public override void ToSql(SqlTextWriter writer)
         {

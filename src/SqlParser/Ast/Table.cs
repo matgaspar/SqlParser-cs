@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="Name">Table name</param>
 /// <param name="SchemaName">Schema name</param>
-public record Table(string Name, string? SchemaName = null) : IWriteSql
+public class Table(string Name, string? SchemaName = null) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -24,7 +24,7 @@ public record Table(string Name, string? SchemaName = null) : IWriteSql
 /// Table alias
 /// </summary>
 /// <param name="Name">Name identifier</param>
-public record TableAlias(Ident Name, Sequence<Ident>? Columns = null) : IWriteSql, IElement
+public class TableAlias(Ident Name, Sequence<Ident>? Columns = null) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

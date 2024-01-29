@@ -1,11 +1,11 @@
 ﻿
 namespace SqlParser.Ast;
 
-public abstract record GroupByExpression : IWriteSql
+public abstract class GroupByExpression : IWriteSql
 {
-    public record All : GroupByExpression;
+    public class All : GroupByExpression;
 
-    public record Expressions(Sequence<Expression> ColumnNames) : GroupByExpression { }
+    public class Expressions(Sequence<Expression> ColumnNames) : GroupByExpression { }
 
     public void ToSql(SqlTextWriter writer)
     {

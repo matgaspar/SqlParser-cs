@@ -1,7 +1,7 @@
 ﻿namespace SqlParser.Ast;
 
 
-public abstract record CharacterLength : IWriteSql
+public abstract class CharacterLength : IWriteSql
 {
     /// <summary>
     /// Information about [character length][1], including length and possibly unit.
@@ -10,9 +10,9 @@ public abstract record CharacterLength : IWriteSql
     /// </summary>
     /// <param name="Length">Default (if VARYING) or maximum (if not VARYING) length</param>
     /// <param name="Unit">Optional unit. If not informed, the ANSI handles it as CHARACTERS implicitly</param>
-    public record IntegerLength(ulong Length, CharLengthUnit Unit = CharLengthUnit.None) : CharacterLength;
+    public class IntegerLength(ulong Length, CharLengthUnit Unit = CharLengthUnit.None) : CharacterLength;
 
-    public record Max : CharacterLength;
+    public class Max : CharacterLength;
 
     public void ToSql(SqlTextWriter writer)
     {

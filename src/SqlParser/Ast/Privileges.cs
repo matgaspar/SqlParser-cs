@@ -3,18 +3,18 @@
 /// <summary>
 /// Privileges
 /// </summary>
-public abstract record Privileges : IWriteSql
+public abstract class Privileges : IWriteSql
 {
     /// <summary>
     /// All privileges applicable to the object type
     /// </summary>
     /// <param name="WithPrivilegesKeyword"></param>
-    public record All(bool WithPrivilegesKeyword) : Privileges;
+    public class All(bool WithPrivilegesKeyword) : Privileges;
     /// <summary>
     /// Specific privileges (e.g. `SELECT`, `INSERT`)
     /// </summary>
     /// <param name="Privileges"></param>
-    public record Actions(Sequence<Action> Privileges) : Privileges;
+    public class Actions(Sequence<Action> Privileges) : Privileges;
 
     public void ToSql(SqlTextWriter writer)
     {

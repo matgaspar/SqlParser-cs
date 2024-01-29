@@ -3,14 +3,14 @@
 /// <summary>
 /// Function argument
 /// </summary>
-public abstract record FunctionArg : IWriteSql, IElement
+public abstract class FunctionArg : IWriteSql, IElement
 {
     /// <summary>
     /// Named function argument
     /// </summary>
     /// <param name="Name">Name identifier</param>
     /// <param name="Arg">Function argument expression</param>
-    public record Named(Ident Name, FunctionArgExpression Arg) : FunctionArg
+    public class Named(Ident Name, FunctionArgExpression Arg) : FunctionArg
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -21,7 +21,7 @@ public abstract record FunctionArg : IWriteSql, IElement
     /// Unnamed function argument
     /// </summary>
     /// <param name="FunctionArgExpression">Function argument expression</param>
-    public record Unnamed(FunctionArgExpression FunctionArgExpression) : FunctionArg
+    public class Unnamed(FunctionArgExpression FunctionArgExpression) : FunctionArg
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -35,13 +35,13 @@ public abstract record FunctionArg : IWriteSql, IElement
 /// <summary>
 /// Function argument expression
 /// </summary>
-public abstract record FunctionArgExpression : IWriteSql, IElement
+public abstract class FunctionArgExpression : IWriteSql, IElement
 {
     /// <summary>
     /// Function expression
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record FunctionExpression(Expression Expression) : FunctionArgExpression
+    public class FunctionExpression(Expression Expression) : FunctionArgExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -51,7 +51,7 @@ public abstract record FunctionArgExpression : IWriteSql, IElement
     /// <summary>
     /// Qualified wildcard, e.g. `alias.*` or `schema.table.*`.
     /// </summary>
-    public record QualifiedWildcard(ObjectName Name) : FunctionArgExpression
+    public class QualifiedWildcard(ObjectName Name) : FunctionArgExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -61,7 +61,7 @@ public abstract record FunctionArgExpression : IWriteSql, IElement
     /// <summary>
     /// An unqualified `*`
     /// </summary>
-    public record Wildcard : FunctionArgExpression
+    public class Wildcard : FunctionArgExpression
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -74,18 +74,18 @@ public abstract record FunctionArgExpression : IWriteSql, IElement
 /// <summary>
 /// Function definition
 /// </summary>
-public abstract record FunctionDefinition : IWriteSql
+public abstract class FunctionDefinition : IWriteSql
 {
     /// <summary>
     /// Single quoted definition
     /// </summary>
     /// <param name="Value">String value</param>
-    public record SingleQuotedDef(string Value) : FunctionDefinition;
+    public class SingleQuotedDef(string Value) : FunctionDefinition;
     /// <summary>
     /// Double quoted definition
     /// </summary>
     /// <param name="Value">String value</param>
-    public record DoubleDollarDef(string Value) : FunctionDefinition;
+    public class DoubleDollarDef(string Value) : FunctionDefinition;
 
     public void ToSql(SqlTextWriter writer)
     {
@@ -105,7 +105,7 @@ public abstract record FunctionDefinition : IWriteSql
 /// <summary>
 /// Create function body
 /// </summary>
-public record CreateFunctionBody : IWriteSql, IElement
+public class CreateFunctionBody : IWriteSql, IElement
 {
     // LANGUAGE lang_name
     public Ident? Language { get; internal set; }
@@ -151,28 +151,28 @@ public record CreateFunctionBody : IWriteSql, IElement
 /// <summary>
 /// Create function using
 /// </summary>
-public abstract record CreateFunctionUsing : IWriteSql
+public abstract class CreateFunctionUsing : IWriteSql
 {
-    public abstract record CreateFunctionUsingValue(string Value) : CreateFunctionUsing;
+    public abstract class CreateFunctionUsingValue(string Value) : CreateFunctionUsing;
     /// <summary>
     /// None
     /// </summary>
-    public record None : CreateFunctionUsing;
+    public class None : CreateFunctionUsing;
     /// <summary>
     /// Create using Jar
     /// </summary>
     /// <param name="Value">String value</param>
-    public record Jar(string Value) : CreateFunctionUsingValue(Value);
+    public class Jar(string Value) : CreateFunctionUsingValue(Value);
     /// <summary>
     /// Create using file
     /// </summary>
     /// <param name="Value">String value</param>
-    public record File(string Value) : CreateFunctionUsingValue(Value);
+    public class File(string Value) : CreateFunctionUsingValue(Value);
     /// <summary>
     /// Create using archive
     /// </summary>
     /// <param name="Value">String value</param>
-    public record Archive(string Value) : CreateFunctionUsingValue(Value);
+    public class Archive(string Value) : CreateFunctionUsingValue(Value);
 
     public void ToSql(SqlTextWriter writer)
     {

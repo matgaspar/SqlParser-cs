@@ -6,7 +6,7 @@
 /// <param name="Expression">Expression</param>
 /// <param name="Asc">Ascending if true; descending if false</param>
 /// <param name="NullsFirst">Nulls first if true; Nulls last if false</param>
-public record OrderByExpression(Expression Expression, bool? Asc = null, bool? NullsFirst = null) : IWriteSql, IElement
+public class OrderByExpression(Expression Expression, bool? Asc = null, bool? NullsFirst = null) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

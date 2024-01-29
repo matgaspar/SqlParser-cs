@@ -5,7 +5,7 @@ namespace SqlParser.Ast;
 /// <summary>
 /// ColumnOptions are modifiers that follow a column definition in a CREATE TABLE statement.
 /// </summary>
-public abstract record ColumnOption : IWriteSql
+public abstract class ColumnOption : IWriteSql
 {
     /// <summary>
     /// Null column option
@@ -13,7 +13,7 @@ public abstract record ColumnOption : IWriteSql
     /// <c>NULL</c>
     /// </example>
     /// </summary>
-    public record Null : ColumnOption
+    public class Null : ColumnOption
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -26,7 +26,7 @@ public abstract record ColumnOption : IWriteSql
     /// <c>NOT NULL</c>
     /// </example>
     /// </summary>
-    public record NotNull : ColumnOption
+    public class NotNull : ColumnOption
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -40,7 +40,7 @@ public abstract record ColumnOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record Default(Expression Expression) : ColumnOption, IElement
+    public class Default(Expression Expression) : ColumnOption, IElement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -54,7 +54,7 @@ public abstract record ColumnOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="IsPrimary">True if primary</param>
-    public record Unique(bool IsPrimary) : ColumnOption
+    public class Unique(bool IsPrimary) : ColumnOption
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -77,7 +77,7 @@ public abstract record ColumnOption : IWriteSql
     /// <param name="ReferredColumns">Referred Columns</param>
     /// <param name="OnDeleteAction">On Delete Action</param>
     /// <param name="OnUpdateAction">On DoUpdate Action</param>
-    public record ForeignKey(ObjectName Name, 
+    public class ForeignKey(ObjectName Name, 
         Sequence<Ident>? ReferredColumns = null, 
         ReferentialAction OnDeleteAction = ReferentialAction.None, 
         ReferentialAction OnUpdateAction = ReferentialAction.None)
@@ -111,7 +111,7 @@ public abstract record ColumnOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record Check(Expression Expression) : ColumnOption, IElement
+    public class Check(Expression Expression) : ColumnOption, IElement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -123,7 +123,7 @@ public abstract record ColumnOption : IWriteSql
     ///  MySQL's AUTO_INCREMENT or SQLite's `AUTOINCREMENT`
     /// </summary>
     /// <param name="Tokens">Tokens</param>
-    public record DialectSpecific(Sequence<Token> Tokens) : ColumnOption
+    public class DialectSpecific(Sequence<Token> Tokens) : ColumnOption
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -142,7 +142,7 @@ public abstract record ColumnOption : IWriteSql
     /// Character set options
     /// </summary>
     /// <param name="Name"></param>
-    public record CharacterSet(ObjectName Name) : ColumnOption, IElement
+    public class CharacterSet(ObjectName Name) : ColumnOption, IElement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -153,7 +153,7 @@ public abstract record ColumnOption : IWriteSql
     /// Comment column option
     /// </summary>
     /// <param name="Value">Comment value</param>
-    public record Comment(string Value) : ColumnOption
+    public class Comment(string Value) : ColumnOption
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -164,7 +164,7 @@ public abstract record ColumnOption : IWriteSql
     /// On Update column options
     /// </summary>
     /// <param name="Expression">Expression</param>
-    public record OnUpdate(Expression Expression) : ColumnOption, IElement
+    public class OnUpdate(Expression Expression) : ColumnOption, IElement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -177,7 +177,7 @@ public abstract record ColumnOption : IWriteSql
     /// <param name="GeneratedAs">Generated as</param>
     /// <param name="SequenceOptions">Sequence options</param>
     /// <param name="GenerationExpr">Generation expression</param>
-    public record Generated(GeneratedAs GeneratedAs,
+    public class Generated(GeneratedAs GeneratedAs,
         bool GeneratedKeyword,
         Sequence<SequenceOptions>? SequenceOptions = null,
         Expression? GenerationExpr = null,

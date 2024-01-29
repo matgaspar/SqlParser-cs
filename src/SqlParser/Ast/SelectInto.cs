@@ -4,7 +4,7 @@
 /// Select into operation
 /// </summary>
 /// <param name="Name">Object name identifier</param>
-public record SelectInto(ObjectName Name) : IWriteSql, IElement
+public class SelectInto(ObjectName Name) : IWriteSql, IElement
 {
     public bool Temporary { get; set; }
     public bool Unlogged { get; set; }

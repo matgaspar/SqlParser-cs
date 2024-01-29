@@ -3,12 +3,12 @@
 /// <summary>
 /// SQL data types
 /// </summary>
-public abstract record DataType : IWriteSql
+public abstract class DataType : IWriteSql
 {
     /// <summary>
     /// Data type with character length specificity
     /// </summary>
-    public abstract record CharacterLengthDataType(CharacterLength? CharacterLength) : DataType
+    public abstract class CharacterLengthDataType(CharacterLength? CharacterLength) : DataType
     {
         protected CharacterLength? CharLength = CharacterLength;
 
@@ -31,7 +31,7 @@ public abstract record DataType : IWriteSql
     /// Data type with length specificity
     /// </summary>
     /// <param name="Length">Data type length</param>
-    public abstract record LengthDataType(ulong? Length = null) : DataType
+    public abstract class LengthDataType(ulong? Length = null) : DataType
     {
         protected void FormatTypeWithOptionalLength(SqlTextWriter writer, string sqlType, ulong? length, bool unsigned = false)
         {
@@ -51,13 +51,13 @@ public abstract record DataType : IWriteSql
     /// Data type with exact number specificity
     /// </summary>
     /// <param name="ExactNumberInfo"></param>
-    public abstract record ExactNumberDataType(ExactNumberInfo? ExactNumberInfo) : DataType;
+    public abstract class ExactNumberDataType(ExactNumberInfo? ExactNumberInfo) : DataType;
     /// <summary>
     /// Data type with time zone information
     /// </summary>
     /// <param name="TimezoneInfo">Time zone info</param>
     /// <param name="Length"></param>
-    public abstract record TimeZoneDataType(TimezoneInfo TimezoneInfo, ulong? Length = null) : DataType
+    public abstract class TimeZoneDataType(TimezoneInfo TimezoneInfo, ulong? Length = null) : DataType
     {
         protected void FormattedDatetimePrecisionAndTz(SqlTextWriter writer, string sqlType)
         {
@@ -84,7 +84,7 @@ public abstract record DataType : IWriteSql
     /// Array data type
     /// </summary>
     /// <param name="DataType"></param>
-    public record Array(ArrayElementTypeDef DataType) : DataType
+    public class Array(ArrayElementTypeDef DataType) : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -108,7 +108,7 @@ public abstract record DataType : IWriteSql
     /// Big integer with optional display width e.g. BIGINT or BIGINT(20)
     /// </summary>
     /// <param name="Length">Length</param>
-    public record BigInt(ulong? Length = null) : LengthDataType(Length)
+    public class BigInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -121,7 +121,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types"/>
     /// </summary>
     /// <param ExactNumberInfo="Exact number"></param>
-    public record BigNumeric(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
+    public class BigNumeric(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -136,7 +136,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://learn.microsoft.com/pt-br/sql/t-sql/data-types/binary-and-varbinary-transact-sql?view=sql-server-ver16"/>
     /// </summary>
     /// <param name="Length">Length</param>
-    public record Binary(ulong? Length = null) : LengthDataType(Length)
+    public class Binary(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -149,7 +149,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#binary-large-object-string-type"/>
     /// <see href="https://docs.oracle.com/javadb/10.8.3.0/ref/rrefblob.html"/>
     /// </summary>
-    public record Blob(ulong? Length = null) : LengthDataType(Length)
+    public class Blob(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -159,14 +159,14 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Boolean data type
     /// </summary>
-    public record Bool : DataType
+    public class Bool : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
             writer.Write("BOOL");
         }
     }
-    public record Boolean : DataType
+    public class Boolean : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -177,7 +177,7 @@ public abstract record DataType : IWriteSql
     /// Binary string data type
     /// </summary>
     // ReSharper disable IdentifierTypo
-    public record Bytea : DataType
+    public class Bytea : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -189,7 +189,7 @@ public abstract record DataType : IWriteSql
     /// Variable-length binary data with optional length.
     ///
     /// [bigquery]: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#bytes_type
-    public record Bytes(ulong? Length) : LengthDataType(Length)
+    public class Bytes(ulong? Length) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -200,7 +200,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Fixed-length char type e.g. CHAR(10)
     /// </summary>
-    public record Char(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
+    public class Char(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -211,7 +211,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Fixed-length character type e.g. CHARACTER(10)
     /// </summary>
-    public record Character(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
+    public class Character(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -224,7 +224,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#character-large-object-type"/>
     /// </summary>
     /// <param name="Length">Length</param>
-    public record CharacterLargeObject(ulong? Length = null) : LengthDataType(Length)
+    public class CharacterLargeObject(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -234,7 +234,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Character varying type e.g. CHARACTER VARYING(10)
     /// </summary>
-    public record CharacterVarying(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
+    public class CharacterVarying(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -250,7 +250,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#character-large-object-type"/>
     /// </summary>
     /// <param name="Length">Length</param>
-    public record CharLargeObject(ulong? Length = null) : LengthDataType(Length)
+    public class CharLargeObject(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -260,7 +260,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Char varying type e.g. CHAR VARYING(10)
     /// </summary>
-    public record CharVarying(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
+    public class CharVarying(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -276,7 +276,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#character-large-object-type"/>
     /// <see href="https://docs.oracle.com/javadb/10.10.1.2/ref/rrefclob.html"/>
     /// </summary>
-    public record Clob(ulong? Length = null) : LengthDataType(Length)
+    public class Clob(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -286,7 +286,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Custom type such as enums
     /// </summary>
-    public record Custom(ObjectName Name, Sequence<string>? Values = null) : DataType, IElement
+    public class Custom(ObjectName Name, Sequence<string>? Values = null) : DataType, IElement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -303,7 +303,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Date data type
     /// </summary>
-    public record Date : DataType
+    public class Date : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -315,7 +315,7 @@ public abstract record DataType : IWriteSql
     /// 
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/datetime.html"/>
     /// </summary>
-    public record Datetime(ulong? Length = null) : LengthDataType(Length)
+    public class Datetime(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -327,7 +327,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#exact-numeric-type"/>
     /// </summary>
-    public record Dec(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
+    public class Dec(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -339,7 +339,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#exact-numeric-type"/>
     /// </summary>
-    public record Decimal(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
+    public class Decimal(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -349,7 +349,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Double data type
     /// </summary>
-    public record Double : DataType
+    public class Double : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -362,7 +362,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#approximate-numeric-type"/>
     /// <see href="https://www.postgresql.org/docs/current/datatype-numeric.html"/>
     /// </summary>
-    public record DoublePrecision : DataType
+    public class DoublePrecision : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -373,7 +373,7 @@ public abstract record DataType : IWriteSql
     /// Enum data types 
     /// </summary>
     /// <param name="Values"></param>
-    public record Enum(Sequence<string> Values) : DataType
+    public class Enum(Sequence<string> Values) : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -392,7 +392,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Floating point with optional precision e.g. FLOAT(8)
     /// </summary>
-    public record Float(ulong? Length = null) : LengthDataType(Length)
+    public class Float(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -402,7 +402,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// FLOAT4 as alias for Real in postgresql
     /// </summary>
-    public record Float4 : DataType
+    public class Float4 : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -412,7 +412,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// FLOAT8 as alias for Double in postgresql
     /// </summary>
-    public record Float8 : DataType
+    public class Float8 : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -422,7 +422,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// FLOAT64
     /// </summary>
-    public record Float64 : DataType
+    public class Float64 : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -433,7 +433,7 @@ public abstract record DataType : IWriteSql
     /// Integer with optional display width e.g. INT or INT(11)
     /// <param name="Length">Length</param>
     /// </summary>
-    public record Int(ulong? Length = null) : LengthDataType(Length)
+    public class Int(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -443,7 +443,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Integer with optional display width e.g. INTEGER or INTEGER(11)
     /// </summary>
-    public record Integer(ulong? Length = null) : LengthDataType(Length)
+    public class Integer(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -453,7 +453,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Interval data type
     /// </summary>
-    public record Interval : DataType
+    public class Interval : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -466,7 +466,7 @@ public abstract record DataType : IWriteSql
     /// Int2 with optional display width e.g. INT2 or INT2(5)
     /// </summary>
     /// <param name="Length">Length</param>
-    public record Int2(ulong? Length = null) : LengthDataType(Length)
+    public class Int2(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -479,7 +479,7 @@ public abstract record DataType : IWriteSql
     /// Int4 with optional display width e.g. Int4 or Int4(11)
     /// </summary>
     /// <param name="Length">Length</param>
-    public record Int4(ulong? Length = null) : LengthDataType(Length)
+    public class Int4(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -492,7 +492,7 @@ public abstract record DataType : IWriteSql
     /// Int8 with optional display width e.g. INT8 or INT8(11)
     /// </summary>
     /// <param name="Length">Length</param>
-    public record Int8(ulong? Length = null) : LengthDataType(Length)
+    public class Int8(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -502,7 +502,7 @@ public abstract record DataType : IWriteSql
     /// Integer type in [bigquery]
     ///
     /// [bigquery]: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types
-    public record Int64 : DataType
+    public class Int64 : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -512,7 +512,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Join data type
     /// </summary>
-    public record Json : DataType
+    public class Json : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -525,7 +525,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/integer-types.html"/>
     /// </summary>
-    public record MediumInt(ulong? Length = null) : LengthDataType(Length)
+    public class MediumInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -535,7 +535,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Empty data type
     /// </summary>
-    public record None : DataType
+    public class None : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -546,7 +546,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#exact-numeric-type"/>
     /// </summary>
-    public record Numeric(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
+    public class Numeric(ExactNumberInfo ExactNumberInfo) : ExactNumberDataType(ExactNumberInfo)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -556,7 +556,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Variable-length character type e.g. NVARCHAR(10)
     /// </summary>
-    public record Nvarchar(ulong? Length = null) : LengthDataType(Length)
+    public class Nvarchar(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -566,7 +566,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Floating point e.g. REAL
     /// </summary>
-    public record Real : DataType
+    public class Real : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -576,7 +576,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Regclass used in postgresql serial
     /// </summary>
-    public record Regclass : DataType
+    public class Regclass : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -586,7 +586,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Set data type
     /// </summary>
-    public record Set(Sequence<string> Values) : DataType
+    public class Set(Sequence<string> Values) : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -606,7 +606,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Small integer with optional display width e.g. SMALLINT or SMALLINT(5)
     /// </summary>
-    public record SmallInt(ulong? Length = null) : LengthDataType(Length)
+    public class SmallInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -616,7 +616,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// String data type
     /// </summary>
-    public record StringType(ulong? Length = null) : LengthDataType(Length)
+    public class StringType(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -627,7 +627,7 @@ public abstract record DataType : IWriteSql
     ///
     /// Bive: https://docs.cloudera.com/cdw-runtime/cloud/impala-sql-reference/topics/impala-struct.html
     /// BigQuery: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#struct_type
-    public record Struct(Sequence<StructField> Fields) : DataType
+    public class Struct(Sequence<StructField> Fields) : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -644,7 +644,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Text data type
     /// </summary>
-    public record Text : DataType
+    public class Text : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -656,7 +656,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#datetime-type"/>
     /// </summary>
-    public record Time(TimezoneInfo TimezoneInfo, ulong? When = null) : TimeZoneDataType(TimezoneInfo, When)
+    public class Time(TimezoneInfo TimezoneInfo, ulong? When = null) : TimeZoneDataType(TimezoneInfo, When)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -668,7 +668,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#datetime-type"/>
     /// </summary>
-    public record Timestamp(TimezoneInfo TimezoneInfo, ulong? When = null) : TimeZoneDataType(TimezoneInfo, When)
+    public class Timestamp(TimezoneInfo TimezoneInfo, ulong? When = null) : TimeZoneDataType(TimezoneInfo, When)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -678,7 +678,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Tiny integer with optional display width e.g. TINYINT or TINYINT(3)
     /// </summary>
-    public record TinyInt(ulong? Length = null) : LengthDataType(Length)
+    public class TinyInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -688,7 +688,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Unsigned big integer with optional display width e.g. BIGINT UNSIGNED or BIGINT(20) UNSIGNED
     /// </summary>
-    public record UnsignedBigInt(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedBigInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -698,7 +698,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Unsigned integer with optional display width e.g. INT UNSIGNED or INT(11) UNSIGNED
     /// </summary>
-    public record UnsignedInt(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -708,7 +708,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Unsigned integer with optional display width e.g. INTEGER UNSIGNED or INTEGER(11) UNSIGNED
     /// </summary>
-    public record UnsignedInteger(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedInteger(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -720,7 +720,7 @@ public abstract record DataType : IWriteSql
     ///
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/integer-types.html"/>
     /// </summary>
-    public record UnsignedMediumInt(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedMediumInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -730,7 +730,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Unsigned small integer with optional display width e.g. SMALLINT UNSIGNED or SMALLINT(5) UNSIGNED
     /// </summary>
-    public record UnsignedSmallInt(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedSmallInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -740,7 +740,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Unsigned tiny integer with optional display width e.g. TINYINT UNSIGNED or TINYINT(3) UNSIGNED
     /// </summary>
-    public record UnsignedTinyInt(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedTinyInt(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -751,7 +751,7 @@ public abstract record DataType : IWriteSql
     /// Unsigned Int2 with optional display width e.g. INT2 Unsigned or INT2(5) Unsigned
     /// </summary>
     /// <param name="Length"></param>
-    public record UnsignedInt2(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedInt2(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -762,7 +762,7 @@ public abstract record DataType : IWriteSql
     /// Unsigned Int4 with optional display width e.g. INT4 Unsigned or INT4(5) Unsigned
     /// </summary>
     /// <param name="Length"></param>
-    public record UnsignedInt4(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedInt4(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -773,7 +773,7 @@ public abstract record DataType : IWriteSql
     /// Unsigned Int8 with optional display width e.g. INT8 Unsigned or INT8(5) Unsigned
     /// </summary>
     /// <param name="Length"></param>
-    public record UnsignedInt8(ulong? Length = null) : LengthDataType(Length)
+    public class UnsignedInt8(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -783,7 +783,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// UUID data ype
     /// </summary>
-    public record Uuid : DataType
+    public class Uuid : DataType
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -796,7 +796,7 @@ public abstract record DataType : IWriteSql
     /// <see href="https://jakewheat.github.io/sql-overview/sql-2016-foundation-grammar.html#binary-string-type"/>
     /// <see href="https://learn.microsoft.com/pt-br/sql/t-sql/data-types/binary-and-varbinary-transact-sql?view=sql-server-ver16"/>
     /// </summary>
-    public record Varbinary(ulong? Length = null) : LengthDataType(Length)
+    public class Varbinary(ulong? Length = null) : LengthDataType(Length)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -806,7 +806,7 @@ public abstract record DataType : IWriteSql
     /// <summary>
     /// Variable-length character type e.g. VARCHAR(10)
     /// </summary>
-    public record Varchar(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
+    public class Varchar(CharacterLength? CharacterLength = null) : CharacterLengthDataType(CharacterLength)
     {
         public override void ToSql(SqlTextWriter writer)
         {

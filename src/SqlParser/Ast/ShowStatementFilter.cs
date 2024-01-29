@@ -3,13 +3,13 @@
 /// <summary>
 /// Show statement filter
 /// </summary>
-public abstract record ShowStatementFilter : IWriteSql
+public abstract class ShowStatementFilter : IWriteSql
 {
     /// <summary>
     /// Like filter
     /// </summary>
     /// <param name="Filter">Filter</param>
-    public record Like(string Filter) : ShowStatementFilter
+    public class Like(string Filter) : ShowStatementFilter
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -21,7 +21,7 @@ public abstract record ShowStatementFilter : IWriteSql
     /// </summary>
     /// <param name="Filter">Filter</param>
     // ReSharper disable once InconsistentNaming
-    public record ILike(string Filter) : ShowStatementFilter
+    public class ILike(string Filter) : ShowStatementFilter
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -32,7 +32,7 @@ public abstract record ShowStatementFilter : IWriteSql
     /// Where filter
     /// </summary>
     /// <param name="Expression">Filter</param>
-    public record Where(Expression Expression) : ShowStatementFilter, IElement
+    public class Where(Expression Expression) : ShowStatementFilter, IElement
     {
         public override void ToSql(SqlTextWriter writer)
         {

@@ -3,11 +3,11 @@
 /// <summary>
 /// Options for `CAST` / `TRY_CAST`
 /// </summary>
-public abstract record CastFormat : IWriteSql
+public abstract class CastFormat : IWriteSql
 {
-    public record Value(Ast.Value Val) : CastFormat;
+    public class Value(Ast.Value Val) : CastFormat;
 
-    public record ValueAtTimeZone(Ast.Value Val, Ast.Value TimeZone) : CastFormat;
+    public class ValueAtTimeZone(Ast.Value Val, Ast.Value TimeZone) : CastFormat;
 
     public void ToSql(SqlTextWriter writer)
     {

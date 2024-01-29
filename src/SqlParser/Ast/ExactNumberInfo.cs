@@ -1,22 +1,22 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record ExactNumberInfo : IWriteSql
+public abstract class ExactNumberInfo : IWriteSql
 {
     /// <summary>
     /// No additional information e.g. `DECIMAL`
     /// </summary>
-    public record None : ExactNumberInfo;
+    public class None : ExactNumberInfo;
     /// <summary>
     /// Only precision information e.g. `DECIMAL(10)`
     /// </summary>
     /// <param name="Length">Length</param>
-    public record Precision(ulong Length) : ExactNumberInfo;
+    public class Precision(ulong Length) : ExactNumberInfo;
     /// <summary>
     /// Precision and scale information e.g. `DECIMAL(10,2)`
     /// </summary>
     /// <param name="Length">Length</param>
     /// <param name="Scale">Scale</param>
-    public record PrecisionAndScale(ulong Length, ulong Scale) : ExactNumberInfo;
+    public class PrecisionAndScale(ulong Length, ulong Scale) : ExactNumberInfo;
 
     public void ToSql(SqlTextWriter writer)
     {

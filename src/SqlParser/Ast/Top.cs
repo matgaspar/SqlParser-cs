@@ -6,7 +6,7 @@
 /// <param name="Quantity">Quantity expression</param>
 /// <param name="WithTies">True if with ties</param>
 /// <param name="Percent">True if percentage</param>
-public record Top(TopQuantity? Quantity, bool WithTies, bool Percent) : IWriteSql, IElement
+public class Top(TopQuantity? Quantity, bool WithTies, bool Percent) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -34,8 +34,8 @@ public record Top(TopQuantity? Quantity, bool WithTies, bool Percent) : IWriteSq
     }
 }
 
-public abstract record TopQuantity
+public abstract class TopQuantity
 {
-    public record TopExpression(Expression Expression) : TopQuantity;
-    public record Constant(long Quantity) : TopQuantity;
+    public class TopExpression(Expression Expression) : TopQuantity;
+    public class Constant(long Quantity) : TopQuantity;
 }

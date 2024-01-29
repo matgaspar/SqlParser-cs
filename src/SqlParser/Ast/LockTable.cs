@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record LockTable(Ident Table, Ident? Alias, LockTableType LockTableType) : IWriteSql
+public class LockTable(Ident Table, Ident? Alias, LockTableType LockTableType) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -15,10 +15,10 @@ public record LockTable(Ident Table, Ident? Alias, LockTableType LockTableType) 
     }
 }
 
-public abstract record LockTableType : IWriteSql
+public abstract class LockTableType : IWriteSql
 {
-    public record Read(bool Local) : LockTableType;
-    public record Write(bool LowPriority) : LockTableType;
+    public class Read(bool Local) : LockTableType;
+    public class Write(bool LowPriority) : LockTableType;
 
     public void ToSql(SqlTextWriter writer)
     {

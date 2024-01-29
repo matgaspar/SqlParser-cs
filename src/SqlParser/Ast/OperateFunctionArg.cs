@@ -4,7 +4,7 @@
 /// Operate function argument
 /// </summary>
 /// <param name="Mode">Argument mode</param>
-public record OperateFunctionArg(ArgMode Mode) : IWriteSql, IElement
+public class OperateFunctionArg(ArgMode Mode) : IWriteSql, IElement
 {
     public Ident? Name { get; init; }
     public DataType? DataType { get; init; }

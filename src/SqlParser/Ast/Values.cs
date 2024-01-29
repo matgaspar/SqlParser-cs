@@ -4,7 +4,7 @@
 /// Was there an explicit ROWs keyword (MySQL)?
 /// <see href="https://dev.mysql.com/doc/refman/8.0/en/values.html"/>
 /// </summary>
-public record Values(Sequence<Sequence<Expression>> Rows, bool ExplicitRow = false) : IWriteSql, IElement
+public class Values(Sequence<Sequence<Expression>> Rows, bool ExplicitRow = false) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

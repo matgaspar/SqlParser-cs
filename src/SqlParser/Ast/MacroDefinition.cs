@@ -1,10 +1,10 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record MacroDefinition : IWriteSql
+public abstract class MacroDefinition : IWriteSql
 {
-    public record MacroExpression(Expression Expression) : MacroDefinition;
+    public class MacroExpression(Expression Expression) : MacroDefinition;
 
-    public record MacroTable(Query Query) : MacroDefinition;
+    public class MacroTable(Query Query) : MacroDefinition;
 
     public void ToSql(SqlTextWriter writer)
     {

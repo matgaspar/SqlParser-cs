@@ -3,11 +3,11 @@
 /// <summary>
 /// Transaction mode
 /// </summary>
-public abstract record TransactionMode : IWriteSql
+public abstract class TransactionMode : IWriteSql
 {
-    public record AccessMode(TransactionAccessMode TransactionAccessMode) : TransactionMode;
+    public class AccessMode(TransactionAccessMode TransactionAccessMode) : TransactionMode;
 
-    public record IsolationLevel(TransactionIsolationLevel TransactionIsolationLevel) : TransactionMode;
+    public class IsolationLevel(TransactionIsolationLevel TransactionIsolationLevel) : TransactionMode;
 
     public void ToSql(SqlTextWriter writer)
     {

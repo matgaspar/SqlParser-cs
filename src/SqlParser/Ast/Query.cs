@@ -4,7 +4,7 @@
 /// The most complete variant of a SELECT select expression, optionally
 /// including WITH, UNION / other set operations, and ORDER BY.
 /// </summary>
-public record Query([Visit(1)] SetExpression Body) : IWriteSql, IElement
+public class Query([Visit(1)] SetExpression Body) : IWriteSql, IElement
 {
     [Visit(0)] public With? With { get; init; }
     [Visit(2)] public Sequence<OrderByExpression>? OrderBy { get; set; }

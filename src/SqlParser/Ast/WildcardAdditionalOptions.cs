@@ -3,7 +3,7 @@
 /// <summary>
 /// Additional options for wildcards, e.g. Snowflake EXCLUDE/RENAME and BigQuery EXCEPT.
 /// </summary>
-public record WildcardAdditionalOptions : IWriteSql, IElement
+public class WildcardAdditionalOptions : IWriteSql, IElement
 {
     // [EXCLUDE...]
     public ExcludeSelectItem? ExcludeOption { get; init; }
@@ -39,7 +39,7 @@ public record WildcardAdditionalOptions : IWriteSql, IElement
     }
 }
 
-public record ReplaceSelectItem(Sequence<ReplaceSelectElement> Items) : IWriteSql, IElement
+public class ReplaceSelectItem(Sequence<ReplaceSelectElement> Items) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -47,7 +47,7 @@ public record ReplaceSelectItem(Sequence<ReplaceSelectElement> Items) : IWriteSq
     }
 }
 
-public record ReplaceSelectElement(Expression Expr, Ident Name, bool AsKeyword) : IWriteSql, IElement
+public class ReplaceSelectElement(Expression Expr, Ident Name, bool AsKeyword) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {

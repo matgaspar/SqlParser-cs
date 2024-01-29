@@ -4,14 +4,14 @@
 
 namespace SqlParser.Ast;
 
-public abstract record Statement : IWriteSql, IElement
+public abstract class Statement : IWriteSql, IElement
 {
     /// <summary>
     /// Alter index statement
     /// </summary>
     /// <param name="Name">Object name</param>
     /// <param name="Operation">Index operation</param>
-    public record AlterIndex(ObjectName Name, AlterIndexOperation Operation) : Statement
+    public class AlterIndex(ObjectName Name, AlterIndexOperation Operation) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -23,7 +23,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Object name</param>
     /// <param name="Operations">Table operations</param>
-    public record AlterTable(ObjectName Name, bool IfExists, bool Only, Sequence<AlterTableOperation> Operations) : Statement
+    public class AlterTable(ObjectName Name, bool IfExists, bool Only, Sequence<AlterTableOperation> Operations) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -49,7 +49,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Columns">Columns</param>
     /// <param name="Query">Alter query</param>
     /// <param name="WithOptions">With options</param>
-    public record AlterView(ObjectName Name, Sequence<Ident> Columns, Query Query, Sequence<SqlOption> WithOptions) : Statement
+    public class AlterView(ObjectName Name, Sequence<Ident> Columns, Query Query, Sequence<SqlOption> WithOptions) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -75,7 +75,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// Alter role statement
     /// </summary>
-    public record AlterRole(Ident Name, AlterRoleOperation Operation) : Statement
+    public class AlterRole(Ident Name, AlterRoleOperation Operation) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -85,7 +85,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// Analyze statement
     /// </summary>
-    public record Analyze([property: Visit(0)] ObjectName Name) : Statement
+    public class Analyze([property: Visit(0)] ObjectName Name) : Statement
     {
         [Visit(1)] public Sequence<Expression>? Partitions { get; init; }
         public bool ForColumns { get; init; }
@@ -134,7 +134,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Condition">Condition</param>
     /// <param name="Message">Message</param>
-    public record Assert(Expression Condition, Expression? Message = null) : Statement
+    public class Assert(Expression Condition, Expression? Message = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -150,7 +150,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Id">ID List</param>
     /// <param name="Value">Expression value</param>
-    public record Assignment(Sequence<Ident> Id, Expression Value) : Statement
+    public class Assignment(Sequence<Ident> Id, Expression Value) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -164,7 +164,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="SchemaName">Schema name</param>
     /// <param name="DatabaseFileName">Database file name</param>
     /// <param name="Database">True if database; otherwise false</param>
-    public record AttachDatabase(Ident SchemaName, Expression DatabaseFileName, bool Database) : Statement
+    public class AttachDatabase(Ident SchemaName, Expression DatabaseFileName, bool Database) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -183,7 +183,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record Cache([property: Visit(1)] ObjectName Name) : Statement
+    public class Cache([property: Visit(1)] ObjectName Name) : Statement
     {
         /// <summary>
         /// Table flag
@@ -232,7 +232,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// Call statement
     /// </summary>
-    public record Call(Expression.Function Function) : Statement
+    public class Call(Expression.Function Function) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -243,7 +243,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Closes statement closes the portal underlying an open cursor.
     /// </summary>
     /// <param name="Cursor">Cursor to close</param>
-    public record Close(CloseCursor Cursor) : Statement
+    public class Close(CloseCursor Cursor) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -257,7 +257,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="ObjectType">Comment object type</param>
     /// <param name="Value">Comment value</param>
     /// <param name="IfExists">Optional IF EXISTS clause</param>
-    public record Comment(ObjectName Name, CommentObject ObjectType, string? Value = null, bool IfExists = false) : Statement
+    public class Comment(ObjectName Name, CommentObject ObjectType, string? Value = null, bool IfExists = false) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -276,7 +276,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Commit statement
     /// </summary>
     /// <param name="Chain">True if chained</param>
-    public record Commit(bool Chain = false) : Statement
+    public class Commit(bool Chain = false) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -291,7 +291,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Source">Source of the Coyp To</param>
     /// <param name="To">True if to</param>
     /// <param name="Target">Copy target</param>
-    public record Copy(CopySource Source, bool To, CopyTarget Target) : Statement
+    public class Copy(CopySource Source, bool To, CopyTarget Target) : Statement
     {
         public Sequence<CopyOption>? Options { get; init; }
         // WITH options (before PostgreSQL version 9.0)
@@ -365,7 +365,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="FileFormat">File format</param>
     /// <param name="CopyOptions">Copy options</param>
     /// <param name="ValidationMode">Validation mode</param>
-    public record CopyIntoSnowflake(
+    public class CopyIntoSnowflake(
         ObjectName Into,
         ObjectName FromStage,
         Ident? FromStageAlias = null,
@@ -441,7 +441,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// Create Database statement
     /// </summary>
-    public record CreateDatabase(ObjectName Name) : Statement, IIfNotExists
+    public class CreateDatabase(ObjectName Name) : Statement, IIfNotExists
     {
         public bool IfNotExists { get; init; }
         public string? Location { get; init; }
@@ -477,7 +477,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Postgres <see href="https://www.postgresql.org/docs/15/sql-createfunction.html"/>
     /// </summary>
     /// <param name="Name">Function name</param>
-    public record CreateFunction([Visit(0)] ObjectName Name, [Visit(1)] CreateFunctionBody Parameters) : Statement
+    public class CreateFunction([Visit(0)] ObjectName Name, [Visit(1)] CreateFunctionBody Parameters) : Statement
     {
         public bool OrReplace { get; init; }
         public bool Temporary { get; init; }
@@ -506,7 +506,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// Create Index statement
     /// </summary>
-    public record CreateIndex([property: Visit(0)] ObjectName? Name, [property: Visit(1)] ObjectName TableName) : Statement, IIfNotExists
+    public class CreateIndex([property: Visit(0)] ObjectName? Name, [property: Visit(1)] ObjectName TableName) : Statement, IIfNotExists
     {
         public Ident? Using { get; init; }
         [Visit(2)] public Sequence<OrderByExpression>? Columns { get; init; }
@@ -578,7 +578,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Name">Name</param>
     /// <param name="ProcedureParams">Procedure params</param>
     /// <param name="Body">Body statements</param>
-    public record CreateProcedure(bool OrAlter, ObjectName Name, Sequence<ProcedureParam>? ProcedureParams, Sequence<Statement>? Body) : Statement
+    public class CreateProcedure(bool OrAlter, ObjectName Name, Sequence<ProcedureParam>? ProcedureParams, Sequence<Statement>? Body) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -604,7 +604,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Name">Name</param>
     /// <param name="Args">Macro args</param>
     /// <param name="Definition">Macro definition</param>
-    public record CreateMacro(bool OrReplace, bool Temporary, ObjectName Name, Sequence<MacroArg>? Args, MacroDefinition Definition) : Statement
+    public class CreateMacro(bool OrReplace, bool Temporary, ObjectName Name, Sequence<MacroArg>? Args, MacroDefinition Definition) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -635,7 +635,7 @@ public abstract record Statement : IWriteSql, IElement
     ///  <see href="https://docs.snowflake.com/en/sql-reference/sql/create-stage"/> 
     /// </remarks>
     /// </summary>
-    public record CreateStage([property: Visit(0)] ObjectName Name, [property: Visit(1)] StageParams StageParams) : Statement, IIfNotExists
+    public class CreateStage([property: Visit(0)] ObjectName Name, [property: Visit(1)] StageParams StageParams) : Statement, IIfNotExists
     {
         public bool OrReplace { get; init; }
         public bool Temporary { get; init; }
@@ -677,7 +677,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Object name</param>
     /// <param name="Columns">Table columns</param>
-    public record CreateTable([property: Visit(0)] ObjectName Name, [property: Visit(1)] Sequence<ColumnDef> Columns) : Statement, IIfNotExists
+    public class CreateTable([property: Visit(0)] ObjectName Name, [property: Visit(1)] Sequence<ColumnDef> Columns) : Statement, IIfNotExists
     {
         public bool OrReplace { get; init; }
         public bool Temporary { get; init; }
@@ -898,7 +898,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Create View statement
     /// </summary>
     /// <param name="Name">Object name</param>
-    public record CreateView([property: Visit(0)] ObjectName Name, [property: Visit(1)] Select Query) : Statement,
+    public class CreateView([property: Visit(0)] ObjectName Name, [property: Visit(1)] Select Query) : Statement,
         IIfNotExists
     {
         public bool OrReplace { get; init; }
@@ -948,7 +948,7 @@ public abstract record Statement : IWriteSql, IElement
     /// SQLite's CREATE VIRTUAL TABLE .. USING module_name (module_args)
     /// </summary>
     /// <param name="Name">Virtual table name</param>
-    public record CreateVirtualTable(ObjectName Name) : Statement, IIfNotExists
+    public class CreateVirtualTable(ObjectName Name) : Statement, IIfNotExists
     {
         public bool IfNotExists { get; init; }
         public Ident? ModuleName { get; init; }
@@ -969,7 +969,7 @@ public abstract record Statement : IWriteSql, IElement
     /// CREATE ROLE statement
     /// postgres - <see href="https://www.postgresql.org/docs/current/sql-createrole.html"/>
     /// </summary>
-    public record CreateRole([property: Visit(0)] Sequence<ObjectName> Names) : Statement, IIfNotExists
+    public class CreateRole([property: Visit(0)] Sequence<ObjectName> Names) : Statement, IIfNotExists
     {
         public bool IfNotExists { get; init; }
         // Postgres
@@ -1067,7 +1067,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Schema name</param>
     /// <param name="IfNotExists">True for if not exists</param>
-    public record CreateSchema(SchemaName Name, bool IfNotExists) : Statement, IIfNotExists
+    public class CreateSchema(SchemaName Name, bool IfNotExists) : Statement, IIfNotExists
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1084,7 +1084,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </example>
     /// </summary>
     /// <param name="Name">Schema name</param>
-    public record CreateSequence([property: Visit(0)] ObjectName Name) : Statement, IIfNotExists
+    public class CreateSequence([property: Visit(0)] ObjectName Name) : Statement, IIfNotExists
     {
         public bool Temporary { get; init; }
         public bool IfNotExists { get; init; }
@@ -1118,7 +1118,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Name</param>
     /// <param name="Representation">Representation</param>
-    public record CreateType(ObjectName Name, UserDefinedTypeRepresentation Representation) : Statement
+    public class CreateType(ObjectName Name, UserDefinedTypeRepresentation Representation) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1129,7 +1129,7 @@ public abstract record Statement : IWriteSql, IElement
     /// DEALLOCATE statement
     /// </summary>
     /// <param name="Name">Name identifier</param>
-    public record Deallocate(Ident Name, bool Prepared) : Statement
+    public class Deallocate(Ident Name, bool Prepared) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1144,7 +1144,7 @@ public abstract record Statement : IWriteSql, IElement
     /// but may also compatible with other SQL.
     /// </summary>
     /// <param name="ObjectType">Discard object type</param>
-    public record Discard(DiscardObject ObjectType) : Statement
+    public class Discard(DiscardObject ObjectType) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1158,7 +1158,7 @@ public abstract record Statement : IWriteSql, IElement
     /// but may also compatible with other SQL.
     /// </summary>
     /// <param name="Name">Name identifier</param>
-    public record Declare(Ident Name) : Statement
+    public class Declare(Ident Name) : Statement
     {
         /// <summary>
         /// Causes the cursor to return data in binary rather than in text format.
@@ -1223,7 +1223,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Using">Using</param>
     /// <param name="Selection">Selection expression</param>
     /// <param name="Returning">Select items to return</param>
-    public record Delete(
+    public class Delete(
         Sequence<ObjectName>? Tables,
         Sequence<TableWithJoins> From,
         Sequence<OrderByExpression>? OrderBy = null,
@@ -1279,7 +1279,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Path">Path</param>
     /// <param name="FileFormat">File format</param>
     /// <param name="Source">Source query</param>
-    public record Directory(bool Overwrite, bool Local, string? Path, FileFormat FileFormat, Select Source) : Statement
+    public class Directory(bool Overwrite, bool Local, string? Path, FileFormat FileFormat, Select Source) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1299,7 +1299,7 @@ public abstract record Statement : IWriteSql, IElement
     /// DROP statement
     /// </summary>
     /// <param name="Names">Object names</param>
-    public record Drop(Sequence<ObjectName> Names) : Statement
+    public class Drop(Sequence<ObjectName> Names) : Statement
     {
         /// The type of the object to drop: TABLE, VIEW, etc.
         public ObjectType ObjectType { get; init; }
@@ -1336,7 +1336,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="IfExists">True if exists</param>
     /// <param name="FuncDesc">Drop function descriptions</param>
     /// <param name="Option">Referential actions</param>
-    public record DropFunction(bool IfExists, Sequence<DropFunctionDesc> FuncDesc, ReferentialAction Option) : Statement
+    public class DropFunction(bool IfExists, Sequence<DropFunctionDesc> FuncDesc, ReferentialAction Option) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1354,7 +1354,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Object name</param>
     /// <param name="Args">Operate function arguments</param>
-    public record DropFunctionDesc(ObjectName Name, Sequence<OperateFunctionArg>? Args = null) : Statement
+    public class DropFunctionDesc(ObjectName Name, Sequence<OperateFunctionArg>? Args = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1370,7 +1370,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Name identifier</param>
     /// <param name="Parameters">Parameter expressions</param>
-    public record Execute(Ident Name, Sequence<Expression>? Parameters = null) : Statement
+    public class Execute(Ident Name, Sequence<Expression>? Parameters = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1385,7 +1385,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// EXPLAIN / DESCRIBE statement
     /// </summary>
-    public record Explain(Statement Statement) : Statement
+    public class Explain(Statement Statement) : Statement
     {
         // ReSharper disable once MemberHidesStaticFromOuterClass
         public new bool Analyze { get; set; }
@@ -1427,7 +1427,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="DescribeAlias">If true, query used the MySQL DESCRIBE alias for explain</param>
     /// <param name="Name">Table name</param>
-    public record ExplainTable(bool DescribeAlias, ObjectName Name) : Statement
+    public class ExplainTable(bool DescribeAlias, ObjectName Name) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1444,7 +1444,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Name">Name identifier</param>
     /// <param name="FetchDirection">Fetch direction</param>
     /// <param name="Into">Fetch into name</param>
-    public record Fetch(Ident Name, FetchDirection FetchDirection, ObjectName? Into = null) : Statement
+    public class Fetch(Ident Name, FetchDirection FetchDirection, ObjectName? Into = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1465,7 +1465,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Grantees">Grantees</param>
     /// <param name="WithGrantOption">WithGrantOption</param>
     /// <param name="GrantedBy">Granted by name</param>
-    public record Grant(Privileges Privileges, GrantObjects? Objects, Sequence<Ident> Grantees, bool WithGrantOption, Ident? GrantedBy = null) : Statement
+    public class Grant(Privileges Privileges, GrantObjects? Objects, Sequence<Ident> Grantees, bool WithGrantOption, Ident? GrantedBy = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1489,7 +1489,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Object name</param>
     /// <param name="Source">Source query</param>
-    public record Insert([property: Visit(0)] ObjectName Name, [property: Visit(1)] Select? Source) : Statement
+    public class Insert([property: Visit(0)] ObjectName Name, [property: Visit(1)] Select? Source) : Statement
     {
         /// Only for Sqlite
         public SqliteOnConflict Or { get; init; }
@@ -1577,7 +1577,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Modifier">KillType modifier</param>
     /// <param name="Id">Id value</param>
-    public record Kill(KillType Modifier, ulong Id) : Statement
+    public class Kill(KillType Modifier, ulong Id) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1595,7 +1595,7 @@ public abstract record Statement : IWriteSql, IElement
     /// MySql `LOCK TABLES table_name  [READ [LOCAL] | [LOW_PRIORITY] WRITE]`
     /// </summary>
     /// <param name="Tables"></param>
-    public record LockTables(Sequence<LockTable> Tables) : Statement
+    public class LockTables(Sequence<LockTable> Tables) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1611,7 +1611,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Source">Source table factor</param>
     /// <param name="On">ON expression</param>
     /// <param name="Clauses">Merge Clauses</param>
-    public record Merge(bool Into, TableFactor Table, TableFactor Source, Expression On, Sequence<MergeClause> Clauses) : Statement
+    public class Merge(bool Into, TableFactor Table, TableFactor Source, Expression On, Sequence<MergeClause> Clauses) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1626,7 +1626,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Repair">Repair</param>
     /// <param name="PartitionAction">Partition action</param>
     // ReSharper disable once IdentifierTypo
-    public record Msck(ObjectName Name, bool Repair, AddDropSync PartitionAction) : Statement
+    public class Msck(ObjectName Name, bool Repair, AddDropSync PartitionAction) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1640,7 +1640,7 @@ public abstract record Statement : IWriteSql, IElement
         }
     }
 
-    public record Pragma(ObjectName Name, Value? Value, bool IsEqual) : Statement
+    public class Pragma(ObjectName Name, Value? Value, bool IsEqual) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1672,7 +1672,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Statement">Statement</param>
     ///
     /// Note: this is a PostgreSQL-specific statement.
-    public record Prepare(Ident Name, Sequence<DataType> DataTypes, Statement Statement) : Statement
+    public class Prepare(Ident Name, Sequence<DataType> DataTypes, Statement Statement) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1689,7 +1689,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Select statement
     /// </summary>
     /// <param name="Query">Select query</param>
-    public record Select(Query Query) : Statement
+    public class Select(Query Query) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1697,7 +1697,7 @@ public abstract record Statement : IWriteSql, IElement
         }
     }
 
-    public record ReleaseSavepoint(Ident Name) : Statement
+    public class ReleaseSavepoint(Ident Name) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1712,7 +1712,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Grantees">Grantees</param>
     /// <param name="GrantedBy">Granted by name</param>
     /// <param name="Cascade">Cascade</param>
-    public record Revoke(Privileges Privileges, GrantObjects Objects, Sequence<Ident> Grantees, bool Cascade = false, Ident? GrantedBy = null) : Statement
+    public class Revoke(Privileges Privileges, GrantObjects Objects, Sequence<Ident> Grantees, bool Cascade = false, Ident? GrantedBy = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1732,7 +1732,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Rollback statement
     /// </summary>
     /// <param name="Chain">True if chaining</param>
-    public record Rollback(bool Chain, Ident? SavePoint = null) : Statement
+    public class Rollback(bool Chain, Ident? SavePoint = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1749,7 +1749,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Savepoint statement
     /// </summary>
     /// <param name="Name">Name identifier</param>
-    public record Savepoint(Ident Name) : Statement
+    public class Savepoint(Ident Name) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1763,7 +1763,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="CharsetName">Character set name</param>
     /// <param name="CollationName">Collation name</param>
-    public record SetNames(string CharsetName, string? CollationName = null) : Statement
+    public class SetNames(string CharsetName, string? CollationName = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1779,7 +1779,7 @@ public abstract record Statement : IWriteSql, IElement
     /// SET NAMES DEFAULT
     /// Note: this is a MySQL-specific statement.
     /// </summary>
-    public record SetNamesDefault : Statement
+    public class SetNamesDefault : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1797,7 +1797,7 @@ public abstract record Statement : IWriteSql, IElement
     ///
     /// <param name="ContextModifier">Context modifier flag</param>
     /// <param name="Name">Name identifier</param>
-    public record SetRole(ContextModifier ContextModifier, Ident? Name = null) : Statement
+    public class SetRole(ContextModifier ContextModifier, Ident? Name = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1818,7 +1818,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Local">True if local</param>
     /// <param name="Value">Expression value</param>
-    public record SetTimeZone(bool Local, Expression Value) : Statement
+    public class SetTimeZone(bool Local, Expression Value) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1838,7 +1838,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Modes">Transaction modes</param>
     /// <param name="Snapshot">Snapshot value</param>
     /// <param name="Session">True if using session</param>
-    public record SetTransaction(Sequence<TransactionMode>? Modes, Value? Snapshot = null, bool Session = false) : Statement
+    public class SetTransaction(Sequence<TransactionMode>? Modes, Value? Snapshot = null, bool Session = false) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1868,7 +1868,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="HiveVar">True if Hive variable</param>
     /// <param name="Variable">Variable name</param>
     /// <param name="Value">Value</param>
-    public record SetVariable(bool Local, bool HiveVar, ObjectName? Variable = null, Sequence<Expression>? Value = null) : Statement
+    public class SetVariable(bool Local, bool HiveVar, ObjectName? Variable = null, Sequence<Expression>? Value = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1888,7 +1888,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Show Collation statement
     /// </summary>
     /// <param name="Filter">Filter</param>
-    public record ShowCollation(ShowStatementFilter? Filter = null) : Statement
+    public class ShowCollation(ShowStatementFilter? Filter = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1909,7 +1909,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Full">True if full</param>
     /// <param name="TableName"></param>
     /// <param name="Filter"></param>
-    public record ShowColumns(bool Extended, bool Full, ObjectName? TableName = null, ShowStatementFilter? Filter = null) : Statement
+    public class ShowColumns(bool Extended, bool Full, ObjectName? TableName = null, ShowStatementFilter? Filter = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1931,7 +1931,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="ObjectType">Show Create Object</param>
     /// <param name="ObjectName">Object name</param>
-    public record ShowCreate(ShowCreateObject ObjectType, ObjectName ObjectName) : Statement
+    public class ShowCreate(ShowCreateObject ObjectType, ObjectName ObjectName) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1942,7 +1942,7 @@ public abstract record Statement : IWriteSql, IElement
     /// SHOW FUNCTIONS
     /// </summary>
     /// <param name="Filter">Show statement filter</param>
-    public record ShowFunctions(ShowStatementFilter? Filter = null) : Statement
+    public class ShowFunctions(ShowStatementFilter? Filter = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1958,7 +1958,7 @@ public abstract record Statement : IWriteSql, IElement
     /// SHOW VARIABLE
     /// </summary>
     /// <param name="Variable">Variable identifiers</param>
-    public record ShowVariable(Sequence<Ident> Variable) : Statement
+    public class ShowVariable(Sequence<Ident> Variable) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -1974,7 +1974,7 @@ public abstract record Statement : IWriteSql, IElement
     /// SHOW VARIABLES
     /// </summary>
     /// <param name="Filter">Show statement filter</param>
-    public record ShowVariables(ShowStatementFilter? Filter, bool Global, bool Session) : Statement
+    public class ShowVariables(ShowStatementFilter? Filter, bool Global, bool Session) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2004,7 +2004,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Full">True if full</param>
     /// <param name="Name">Optional database name</param>
     /// <param name="Filter">Optional filter</param>
-    public record ShowTables(bool Extended, bool Full, Ident? Name = null, ShowStatementFilter? Filter = null) : Statement
+    public class ShowTables(bool Extended, bool Full, Ident? Name = null, ShowStatementFilter? Filter = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2027,7 +2027,7 @@ public abstract record Statement : IWriteSql, IElement
     /// START TRANSACTION
     /// </summary>
     /// <param name="Modes">Transaction modes</param>
-    public record StartTransaction(Sequence<TransactionMode>? Modes, bool Begin, TransactionModifier? Modifier = null) : Statement
+    public class StartTransaction(Sequence<TransactionMode>? Modes, bool Begin, TransactionModifier? Modifier = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2059,7 +2059,7 @@ public abstract record Statement : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Object name</param>
     /// <param name="Partitions">List of partitions</param>
-    public record Truncate(ObjectName Name, Sequence<Expression>? Partitions, bool Table) : Statement
+    public class Truncate(ObjectName Name, Sequence<Expression>? Partitions, bool Table) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2079,7 +2079,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="Name">Object name</param>
     /// <param name="IfExists">True if exists statement</param>
     // ReSharper disable once InconsistentNaming
-    public record UNCache(ObjectName Name, bool IfExists = false) : Statement
+    public class UNCache(ObjectName Name, bool IfExists = false) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2091,7 +2091,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <summary>
     /// MySql `Unlock Tables`
     /// </summary>
-    public record UnlockTables : Statement
+    public class UnlockTables : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2106,7 +2106,7 @@ public abstract record Statement : IWriteSql, IElement
     /// <param name="From">Update source</param>
     /// <param name="Selection">Selection expression</param>
     /// <param name="Returning">Select returning values</param>
-    public record Update(TableWithJoins Table, Sequence<Assignment> Assignments, TableWithJoins? From = null, Expression? Selection = null, Sequence<SelectItem>? Returning = null) : Statement
+    public class Update(TableWithJoins Table, Sequence<Assignment> Assignments, TableWithJoins? From = null, Expression? Selection = null, Sequence<SelectItem>? Returning = null) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -2139,7 +2139,7 @@ public abstract record Statement : IWriteSql, IElement
     /// Note: This is a MySQL-specific statement.
     /// </summary>
     /// <param name="Name">Name identifier</param>
-    public record Use(Ident Name) : Statement
+    public class Use(Ident Name) : Statement
     {
         public override void ToSql(SqlTextWriter writer)
         {

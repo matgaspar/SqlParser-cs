@@ -1,10 +1,10 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record NullTreatment : IWriteSql
+public abstract class NullTreatment : IWriteSql
 {
-    public record IgnoreNulls : NullTreatment;
+    public class IgnoreNulls : NullTreatment;
 
-    public record RespectNulls : NullTreatment;
+    public class RespectNulls : NullTreatment;
 
     public void ToSql(SqlTextWriter writer)
     {

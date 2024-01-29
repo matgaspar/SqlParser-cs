@@ -1,10 +1,10 @@
 ﻿namespace SqlParser.Ast;
 
-public abstract record Password : IWriteSql
+public abstract class Password : IWriteSql
 {
-    public record ValidPassword(Expression Expression) : Password, IElement;
+    public class ValidPassword(Expression Expression) : Password, IElement;
 
-    public record NullPassword : Password;
+    public class NullPassword : Password;
 
     public void ToSql(SqlTextWriter writer)
     {

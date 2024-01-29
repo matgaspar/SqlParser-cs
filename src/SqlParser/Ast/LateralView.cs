@@ -4,7 +4,7 @@
 /// A Hive LATERAL VIEW with potential column aliases
 /// </summary>
 /// <param name="Expression">Vie expression</param>
-public record LateralView([property: Visit(0)] Expression Expression) : IWriteSql, IElement
+public class LateralView([property: Visit(0)] Expression Expression) : IWriteSql, IElement
 {
     [Visit(1)]
     public ObjectName? LateralViewName { get; init; }

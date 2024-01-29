@@ -3,13 +3,13 @@
 /// <summary>
 /// Schema name
 /// </summary>
-public abstract record SchemaName : Statement
+public abstract class SchemaName : Statement
 {
     /// <summary>
     /// Only schema name specified: schema name
     /// </summary>
     /// <param name="Name"></param>
-    public record Simple(ObjectName Name) : SchemaName
+    public class Simple(ObjectName Name) : SchemaName
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -21,7 +21,7 @@ public abstract record SchemaName : Statement
     /// Only authorization identifier specified: `AUTHORIZATION schema authorization identifier`
     /// </summary>
     /// <param name="Value"></param>
-    public record UnnamedAuthorization(Ident Value) : SchemaName
+    public class UnnamedAuthorization(Ident Value) : SchemaName
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -34,7 +34,7 @@ public abstract record SchemaName : Statement
     /// </summary>
     /// <param name="Name"></param>
     /// <param name="Value"></param>
-    public record NamedAuthorization(ObjectName Name, Ident Value) : SchemaName
+    public class NamedAuthorization(ObjectName Name, Ident Value) : SchemaName
     {
         public override void ToSql(SqlTextWriter writer)
         {

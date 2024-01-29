@@ -3,15 +3,15 @@
 /// <summary>
 /// Primitive SQL values such as number and string
 /// </summary>
-public abstract record Value : IWriteSql
+public abstract class Value : IWriteSql
 {
-    public abstract record StringBasedValue(string Value) : Value;
+    public abstract class StringBasedValue(string Value) : Value;
 
     /// <summary>
     /// Boolean value true or false
     /// </summary>
     /// <param name="Value">True or false</param>
-    public record Boolean(bool Value) : Value
+    public class Boolean(bool Value) : Value
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -22,7 +22,7 @@ public abstract record Value : IWriteSql
     /// $tag_name$string value$tag_name$ - Postgres syntax
     /// </summary>
     /// <param name="Value">Quoted value</param>
-    public record DollarQuotedString(DollarQuotedStringValue Value) : Value
+    public class DollarQuotedString(DollarQuotedStringValue Value) : Value
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -33,7 +33,7 @@ public abstract record Value : IWriteSql
     /// B"string value"
     /// </summary>
     /// <param name="Value">String value</param>
-    public record DoubleQuotedString(string Value) : StringBasedValue(Value)
+    public class DoubleQuotedString(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -46,7 +46,7 @@ public abstract record Value : IWriteSql
     /// for more details.
     /// </summary>
     /// <param name="Value">String value</param>
-    public record EscapedStringLiteral(string Value) : StringBasedValue(Value)
+    public class EscapedStringLiteral(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -57,7 +57,7 @@ public abstract record Value : IWriteSql
     /// X'hex value'
     /// </summary>
     /// <param name="Value">String value</param>
-    public record HexStringLiteral(string Value) : StringBasedValue(Value)
+    public class HexStringLiteral(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -68,7 +68,7 @@ public abstract record Value : IWriteSql
     /// N'string value'
     /// </summary>
     /// <param name="Value">String value</param>
-    public record NationalStringLiteral(string Value) : StringBasedValue(Value)
+    public class NationalStringLiteral(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -78,7 +78,7 @@ public abstract record Value : IWriteSql
     /// <summary>
     /// NULL value
     /// </summary>
-    public record Null : Value
+    public class Null : Value
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -90,7 +90,7 @@ public abstract record Value : IWriteSql
     /// </summary>
     /// <param name="Value">String value</param>
     /// <param name="Long">True if long value</param>
-    public record Number(string Value, bool Long = false) : StringBasedValue(Value)
+    public class Number(string Value, bool Long = false) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -112,7 +112,7 @@ public abstract record Value : IWriteSql
     /// `?` or `$` Prepared statement arg placeholder
     /// </summary>
     /// <param name="Value">String value</param>
-    public record Placeholder(string Value) : StringBasedValue(Value)
+    public class Placeholder(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -124,7 +124,7 @@ public abstract record Value : IWriteSql
     /// <see href="https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#quoted_literals"/>
     /// </summary>
     /// <param name="Value">String value</param>
-    public record RawStringLiteral(string Value) : StringBasedValue(Value)
+    public class RawStringLiteral(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -135,7 +135,7 @@ public abstract record Value : IWriteSql
     /// Single quoted string value
     /// </summary>
     /// <param name="Value">String value</param>
-    public record SingleQuotedString(string Value) : StringBasedValue(Value)
+    public class SingleQuotedString(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -146,7 +146,7 @@ public abstract record Value : IWriteSql
     /// B'string value'
     /// </summary>
     /// <param name="Value">String value</param>
-    public record SingleQuotedByteStringLiteral(string Value) : StringBasedValue(Value)
+    public class SingleQuotedByteStringLiteral(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -157,7 +157,7 @@ public abstract record Value : IWriteSql
     /// B"string value"
     /// </summary>
     /// <param name="Value">String value</param>
-    public record DoubleQuotedByteStringLiteral(string Value) : StringBasedValue(Value)
+    public class DoubleQuotedByteStringLiteral(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -168,7 +168,7 @@ public abstract record Value : IWriteSql
     /// Add support of snowflake field:key - key should be a value
     /// </summary>
     /// <param name="Value">String value</param>
-    public record UnQuotedString(string Value) : StringBasedValue(Value)
+    public class UnQuotedString(string Value) : StringBasedValue(Value)
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -204,7 +204,7 @@ public abstract record Value : IWriteSql
 /// </summary>
 /// <param name="Value">String value</param>
 /// <param name="Tag">Tag value</param>
-public record DollarQuotedStringValue(string Value, string? Tag = null) : IWriteSql
+public class DollarQuotedStringValue(string Value, string? Tag = null) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {

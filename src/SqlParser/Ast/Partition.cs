@@ -1,6 +1,6 @@
 ﻿namespace SqlParser.Ast;
 
-public record Partition(Sequence<Expression> Partitions) : IWriteSql
+public class Partition(Sequence<Expression> Partitions) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {

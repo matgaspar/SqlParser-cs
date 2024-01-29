@@ -1,21 +1,29 @@
-﻿namespace SqlParser.Ast;
-
-/// <summary>
-/// Alter index operations
-/// </summary>
-public abstract record AlterIndexOperation : IWriteSql
+﻿namespace SqlParser.Ast
 {
     /// <summary>
-    /// Rename index alter operation
+    /// Alter index operations
     /// </summary>
-    /// <param name="Name">Object name</param>
-    public record RenameIndex(ObjectName Name) : AlterIndexOperation, IElement
+    public abstract class AlterIndexOperation : IWriteSql
     {
-        public override void ToSql(SqlTextWriter writer)
+        /// <summary>
+        /// Rename index alter operation
+        /// </summary>
+        /// <param name="Name">Object name</param>
+        public class RenameIndex : AlterIndexOperation, IElement
         {
-            writer.Write($"RENAME TO {Name}");
-        }
-    }
+            public ObjectName Name { get; }
 
-    public abstract void ToSql(SqlTextWriter writer);
+            public RenameIndex(ObjectName name)
+            {
+                Name = name;
+            }
+
+            public override void ToSql(SqlTextWriter writer)
+            {
+                writer.Write($"RENAME TO {Name}");
+            }
+        }
+
+        public abstract void ToSql(SqlTextWriter writer);
+    }
 }

@@ -6,7 +6,7 @@
 /// to a set operation like UNION.
 /// </summary>
 /// <param name="Projection">Select projections</param>
-public record Select([Visit(1)] Sequence<SelectItem> Projection) : IWriteSql, IElement
+public class Select([Visit(1)] Sequence<SelectItem> Projection) : IWriteSql, IElement
 {
     public DistinctFilter? Distinct { get; init; }
     [Visit(0)] public Top? Top { get; init; }

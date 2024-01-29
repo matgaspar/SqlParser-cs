@@ -3,33 +3,33 @@
 /// <summary>
 /// Grand objects
 /// </summary>
-public abstract record GrantObjects(Sequence<ObjectName> Schemas) : IWriteSql, IElement
+public abstract class GrantObjects(Sequence<ObjectName> Schemas) : IWriteSql, IElement
 {
     /// <summary>
     /// Grant privileges on ALL SEQUENCES IN SCHEMA schema_name [, ...]
     /// </summary>
     /// <param name="Schemas">Schemas</param>
-    public record AllSequencesInSchema(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
+    public class AllSequencesInSchema(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
     /// <summary>
     /// Grant privileges on ALL TABLES IN SCHEMA schema_name [, ...]
     /// </summary>
     /// <param name="Schemas">Schemas</param>
-    public record AllTablesInSchema(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
+    public class AllTablesInSchema(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
     /// <summary>
     /// Grant privileges on specific schemas
     /// </summary>
     /// <param name="Schemas">Schemas</param>
-    public record Schema(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
+    public class Schema(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
     /// <summary>
     /// Grant privileges on specific sequences
     /// </summary>
     /// <param name="Schemas">Schemas</param>
-    public record Sequences(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
+    public class Sequences(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
     /// <summary>
     /// Grant privileges on specific tables
     /// </summary>
     /// <param name="Schemas">Schemas</param>
-    public record Tables(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
+    public class Tables(Sequence<ObjectName> Schemas) : GrantObjects(Schemas);
 
     public void ToSql(SqlTextWriter writer)
     {

@@ -8,7 +8,7 @@
 /// <param name="Separator">Aggregation separator expression</param>
 /// <param name="OnOverflow">Optional n overflow</param>
 /// <param name="WithGroup">Order by list with group</param>
-public record ListAggregate(Expression Expression, bool Distinct, Expression? Separator, ListAggOnOverflow? OnOverflow, Sequence<OrderByExpression> WithGroup) : IWriteSql, IElement
+public class ListAggregate(Expression Expression, bool Distinct, Expression? Separator, ListAggOnOverflow? OnOverflow, Sequence<OrderByExpression> WithGroup) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -37,16 +37,16 @@ public record ListAggregate(Expression Expression, bool Distinct, Expression? Se
 /// <summary>
 /// List aggregation on overflow
 /// </summary>
-public abstract record ListAggOnOverflow : IWriteSql, IElement
+public abstract class ListAggOnOverflow : IWriteSql, IElement
 {
     /// <summary>
     /// Error on overflow
     /// </summary>
-    public record Error : ListAggOnOverflow;
+    public class Error : ListAggOnOverflow;
     /// <summary>
     /// Truncate on overflow
     /// </summary>
-    public record Truncate : ListAggOnOverflow
+    public class Truncate : ListAggOnOverflow
     {
         public Expression? Filler { get; init; }
         public bool WithCount { get; init; }

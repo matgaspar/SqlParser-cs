@@ -61,11 +61,11 @@ Console.WriteLine(table.Name); // <-- writes "my_table"
 ```
 
 ### C# Records
-While C# and Rust programming languages have high feature parity, there are some things that (at present), C# cannot duplicate. In particular, Rust uses discriminated unions.  Simply put, Rust allows enums to carry class-like (or record-like) implementations.  [C# can come close](https://github.com/dotnet/csharplang/blob/main/proposals/discriminated-unions.md) with creative use of record types, particularly due to their ByValue equality.  However they still fall short of the Rust counterpart.  
+While C# and Rust programming languages have high feature parity, there are some things that (at present), C# cannot duplicate. In particular, Rust uses discriminated unions.  Simply put, Rust allows enums to carry class-like (or class-like) implementations.  [C# can come close](https://github.com/dotnet/csharplang/blob/main/proposals/discriminated-unions.md) with creative use of class types, particularly due to their ByValue equality.  However they still fall short of the Rust counterpart.  
 
-In this project, every effort has been made to duplicate the object hierarchy by using a combination of abstract base records with enclosed sub-class implementations.  While somewhat unconventional, it allows each major syntax tree type to have a pseudo namespace within the containing record type.
+In this project, every effort has been made to duplicate the object hierarchy by using a combination of abstract base classs with enclosed sub-class implementations.  While somewhat unconventional, it allows each major syntax tree type to have a pseudo namespace within the containing class type.
 
-For example, a `Statement` is a high level type that describes `SELECT`, `INSERT`, `DELETE` statements, etc.  Each of those specific implementations is a child of the `Statement` abstract base record.
+For example, a `Statement` is a high level type that describes `SELECT`, `INSERT`, `DELETE` statements, etc.  Each of those specific implementations is a child of the `Statement` abstract base class.
 
 ```cs
 var statement = new Statement.Select(...)

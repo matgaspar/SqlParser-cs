@@ -1,8 +1,8 @@
 ﻿
 namespace SqlParser.Ast;
-public abstract record UserDefinedTypeRepresentation : IWriteSql
+public abstract class UserDefinedTypeRepresentation : IWriteSql
 {
-    public record Composite(Sequence<UserDefinedTypeCompositeAttributeDef> Attributes) : UserDefinedTypeRepresentation;
+    public class Composite(Sequence<UserDefinedTypeCompositeAttributeDef> Attributes) : UserDefinedTypeRepresentation;
 
     public void ToSql(SqlTextWriter writer)
     {

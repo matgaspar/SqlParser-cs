@@ -14,10 +14,10 @@ using static SqlParser.Ast.AlterTableOperation;
 
 namespace SqlParser;
 
-// This record type fills in the outcome from the Rust project's macro that
+// This class type fills in the outcome from the Rust project's macro that
 // intercepts control flow depending on parsing result.  The same flow is
-// used in the parser, and the outcome of the lambda matches this record.  
-public record MaybeParsed<T>(bool Parsed, T Result);
+// used in the parser, and the outcome of the lambda matches this class.  
+public class MaybeParsed<T>(bool Parsed, T Result);
 
 public class Parser
 {

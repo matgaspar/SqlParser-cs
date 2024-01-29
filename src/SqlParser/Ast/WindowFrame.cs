@@ -6,18 +6,18 @@
 /// <param name="Units">Window unit flag</param>
 /// <param name="StartBound">Boundary start</param>
 /// <param name="EndBound">Boundary end</param>
-public record WindowFrame(WindowFrameUnit Units, WindowFrameBound? StartBound, WindowFrameBound? EndBound) : IElement;
+public class WindowFrame(WindowFrameUnit Units, WindowFrameBound? StartBound, WindowFrameBound? EndBound) : IElement;
 
-public abstract record WindowFrameBound : IWriteSql, IElement
+public abstract class WindowFrameBound : IWriteSql, IElement
 {
-    public record CurrentRow : WindowFrameBound
+    public class CurrentRow : WindowFrameBound
     {
         public override void ToSql(SqlTextWriter writer)
         {
             writer.Write("CURRENT ROW");
         }
     }
-    public record Preceding(Expression? Expression) : WindowFrameBound
+    public class Preceding(Expression? Expression) : WindowFrameBound
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -31,7 +31,7 @@ public abstract record WindowFrameBound : IWriteSql, IElement
             }
         }
     }
-    public record Following(Expression? Expression) : WindowFrameBound
+    public class Following(Expression? Expression) : WindowFrameBound
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -49,7 +49,7 @@ public abstract record WindowFrameBound : IWriteSql, IElement
     public abstract void ToSql(SqlTextWriter writer);
 }
 
-public record WindowSpec(Sequence<Expression>? PartitionBy = null, Sequence<OrderByExpression>? OrderBy = null, WindowFrame? WindowFrame = null) : IWriteSql, IElement
+public class WindowSpec(Sequence<Expression>? PartitionBy = null, Sequence<OrderByExpression>? OrderBy = null, WindowFrame? WindowFrame = null) : IWriteSql, IElement
 {
     public void ToSql(SqlTextWriter writer)
     {
@@ -82,7 +82,7 @@ public record WindowSpec(Sequence<Expression>? PartitionBy = null, Sequence<Orde
     }
 }
 
-public record NamedWindowDefinition(Ident Name, WindowSpec WindowSpec) : IWriteSql
+public class NamedWindowDefinition(Ident Name, WindowSpec WindowSpec) : IWriteSql
 {
     public void ToSql(SqlTextWriter writer)
     {

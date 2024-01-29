@@ -3,26 +3,26 @@
 /// <summary>
 /// Copy targets
 /// </summary>
-public abstract record CopyTarget : IWriteSql
+public abstract class CopyTarget : IWriteSql
 {
     /// <summary>
     /// Stdin copy target
     /// </summary>
-    public record Stdin : CopyTarget;
+    public class Stdin : CopyTarget;
     /// <summary>
     /// Stdin copy target
     /// </summary>
-    public record Stdout : CopyTarget;
+    public class Stdout : CopyTarget;
     /// <summary>
     /// File copy target
     /// </summary>
     /// <param name="FileName">File name</param>
-    public record File(string FileName) : CopyTarget;
+    public class File(string FileName) : CopyTarget;
     /// <summary>
     /// Program copy target
     /// </summary>
     /// <param name="Comment">Comment value</param>
-    public record Program(string Comment) : CopyTarget;
+    public class Program(string Comment) : CopyTarget;
 
     public void ToSql(SqlTextWriter writer)
     {
@@ -49,16 +49,16 @@ public abstract record CopyTarget : IWriteSql
 /// <summary>
 /// Copy source
 /// </summary>
-public abstract record CopySource
+public abstract class CopySource
 {
-    public record Table(ObjectName TableName, Sequence<Ident> Columns) : CopySource;
+    public class Table(ObjectName TableName, Sequence<Ident> Columns) : CopySource;
 
-    public record CopySourceQuery(Query? Query) : CopySource;
+    public class CopySourceQuery(Query? Query) : CopySource;
 }
 /// <summary>
 /// Copy options
 /// </summary>
-public abstract record CopyOption : IWriteSql
+public abstract class CopyOption : IWriteSql
 {
     /// <summary>
     /// <example>
@@ -68,7 +68,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Name"></param>
-    public record Format(Ident Name) : CopyOption;
+    public class Format(Ident Name) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -77,7 +77,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Frozen"></param>
-    public record Freeze(bool Frozen) : CopyOption;
+    public class Freeze(bool Frozen) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -86,7 +86,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Character"></param>
-    public record Delimiter(char Character) : CopyOption;
+    public class Delimiter(char Character) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -95,7 +95,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Value"></param>
-    public record Null(string Value) : CopyOption;
+    public class Null(string Value) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -104,7 +104,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="HeaderValue"></param>
-    public record Header(bool HeaderValue) : CopyOption;
+    public class Header(bool HeaderValue) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -113,7 +113,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Character"></param>
-    public record Quote(char Character) : CopyOption;
+    public class Quote(char Character) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -122,7 +122,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Character"></param>
-    public record Escape(char Character) : CopyOption;
+    public class Escape(char Character) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -131,7 +131,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Names"></param>
-    public record ForceQuote(Sequence<Ident> Names) : CopyOption;
+    public class ForceQuote(Sequence<Ident> Names) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -140,7 +140,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Names"></param>
-    public record ForceNotNull(Sequence<Ident> Names) : CopyOption;
+    public class ForceNotNull(Sequence<Ident> Names) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -149,7 +149,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Names"></param>
-    public record ForceNull(Sequence<Ident> Names) : CopyOption;
+    public class ForceNull(Sequence<Ident> Names) : CopyOption;
     /// <summary>
     /// <example>
     /// <c>
@@ -158,7 +158,7 @@ public abstract record CopyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Name"></param>
-    public record Encoding(string Name) : CopyOption;
+    public class Encoding(string Name) : CopyOption;
 
     public void ToSql(SqlTextWriter writer)
     {
@@ -221,7 +221,7 @@ public abstract record CopyOption : IWriteSql
 /// <summary>
 /// Copy legacy options
 /// </summary>
-public abstract record CopyLegacyOption : IWriteSql
+public abstract class CopyLegacyOption : IWriteSql
 {
     /// <summary>
     /// Binary copy option
@@ -231,7 +231,7 @@ public abstract record CopyLegacyOption : IWriteSql
     /// </c>
     /// </example>
     /// </summary>
-    public record Binary : CopyLegacyOption;
+    public class Binary : CopyLegacyOption;
 
     /// <summary>
     /// Delimiter copy option
@@ -242,7 +242,7 @@ public abstract record CopyLegacyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Character">Character delimiter</param>
-    public record Delimiter(char Character) : CopyLegacyOption;
+    public class Delimiter(char Character) : CopyLegacyOption;
 
     /// <summary>
     /// Null copy option
@@ -253,7 +253,7 @@ public abstract record CopyLegacyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Value">String value</param>
-    public record Null(string Value) : CopyLegacyOption;
+    public class Null(string Value) : CopyLegacyOption;
 
     /// <summary>
     /// CSV copy option
@@ -264,7 +264,7 @@ public abstract record CopyLegacyOption : IWriteSql
     /// </example>
     /// </summary>
     /// <param name="Options">Legacy copy options</param>
-    public record Csv(Sequence<CopyLegacyCsvOption> Options) : CopyLegacyOption;
+    public class Csv(Sequence<CopyLegacyCsvOption> Options) : CopyLegacyOption;
 
     public void ToSql(SqlTextWriter writer)
     {
@@ -290,32 +290,32 @@ public abstract record CopyLegacyOption : IWriteSql
     }
 }
 
-public abstract record CopyLegacyCsvOption : IWriteSql
+public abstract class CopyLegacyCsvOption : IWriteSql
 {
     /// <summary>
     /// HEADER
     /// </summary>
-    public record Header : CopyLegacyCsvOption;
+    public class Header : CopyLegacyCsvOption;
     /// <summary>
     /// QUOTE [ AS ] 'quote_character'
     /// </summary>
     /// <param name="Character"></param>
-    public record Quote(char Character) : CopyLegacyCsvOption;
+    public class Quote(char Character) : CopyLegacyCsvOption;
     /// <summary>
     /// ESCAPE [ AS ] 'escape_character'
     /// </summary>
     /// <param name="Character"></param>
-    public record Escape(char Character) : CopyLegacyCsvOption;
+    public class Escape(char Character) : CopyLegacyCsvOption;
     /// <summary>
     /// FORCE QUOTE { column_name [, ...] | * }
     /// </summary>
     /// <param name="Names"></param>
-    public record ForceQuote(Sequence<Ident> Names) : CopyLegacyCsvOption;
+    public class ForceQuote(Sequence<Ident> Names) : CopyLegacyCsvOption;
     /// <summary>
     /// FORCE NOT NULL column_name [, ...]
     /// </summary>
     /// <param name="Names"></param>
-    public record ForceNotNull(Sequence<Ident> Names) : CopyLegacyCsvOption;
+    public class ForceNotNull(Sequence<Ident> Names) : CopyLegacyCsvOption;
 
     public void ToSql(SqlTextWriter writer)
     {

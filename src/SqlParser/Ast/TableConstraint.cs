@@ -4,7 +4,7 @@
 /// A table-level constraint, specified in a CREATE TABLE or an
 /// ALTER TABLE ADD constraint statement.
 /// </summary>
-public abstract record TableConstraint : IWriteSql, IElement
+public abstract class TableConstraint : IWriteSql, IElement
 {
     /// <summary>
     /// Unique table constraint
@@ -14,7 +14,7 @@ public abstract record TableConstraint : IWriteSql, IElement
     /// </c>
     /// </example>
     /// </summary>
-    public record Unique(Sequence<Ident> Columns) : TableConstraint
+    public class Unique(Sequence<Ident> Columns) : TableConstraint
     {
         public Ident? Name { get; init; }
         public bool IsPrimaryKey { get; init; }
@@ -39,7 +39,7 @@ public abstract record TableConstraint : IWriteSql, IElement
     /// </summary>
     /// <param name="ForeignTable">Foreign table object name</param>
     /// <param name="Columns">Column identifiers</param>
-    public record ForeignKey(ObjectName ForeignTable, Sequence<Ident> Columns) : TableConstraint
+    public class ForeignKey(ObjectName ForeignTable, Sequence<Ident> Columns) : TableConstraint
     {
         public Ident? Name { get; init; }
         public Sequence<Ident>? ReferredColumns { get; init; }
@@ -73,7 +73,7 @@ public abstract record TableConstraint : IWriteSql, IElement
     /// </summary>
     /// <param name="Name">Name identifier</param>
     /// <param name="Expression">Check expression</param>
-    public record Check(Expression Expression, Ident Name) : TableConstraint
+    public class Check(Expression Expression, Ident Name) : TableConstraint
     {
         public override void ToSql(SqlTextWriter writer)
         {
@@ -90,7 +90,7 @@ public abstract record TableConstraint : IWriteSql, IElement
     ///
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/create-table.html"/>
     /// </summary>
-    public record Index(Sequence<Ident> Columns) : TableConstraint
+    public class Index(Sequence<Ident> Columns) : TableConstraint
     {
         public bool DisplayAsKey { get; init; }
         public Ident? Name { get; init; }
@@ -128,7 +128,7 @@ public abstract record TableConstraint : IWriteSql, IElement
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/fulltext-natural-language.html"/>
     /// <see href="https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html"/>
     /// </summary>
-    public record FulltextOrSpatial(Sequence<Ident> Columns) : TableConstraint
+    public class FulltextOrSpatial(Sequence<Ident> Columns) : TableConstraint
     {
         public bool FullText { get; init; }
         public KeyOrIndexDisplay IndexTypeDisplay { get; init; }
